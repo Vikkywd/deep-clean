@@ -1,12 +1,26 @@
 import { Link } from 'react-router-dom';
 import { Button } from 'antd'
+import { useEffect, useState } from 'react';
 
 const Header = () => {
+    const [isScrolled, setIsScrolled] = useState(false)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 10)
+        }
+
+        window.addEventListener('scroll', handleScroll)
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
     return (
-        <header className="sticky top-0 z-40 border-b bg-background">
+        <header className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
+            isScrolled ? 'bg-gray-900' : 'bg-background'
+        }`}>
             <div className="container flex h-16 items-center justify-between py-4">
                 <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-primary">SparkleClean</span>
+                    <span className="text-xl font-bold text-primary">Deep-Clean</span>
                 </div>
                 <nav className="hidden md:flex gap-6">
                     <Link href="#services" className="text-sm font-medium hover:text-primary">

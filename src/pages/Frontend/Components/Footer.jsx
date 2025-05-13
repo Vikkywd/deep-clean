@@ -7,7 +7,7 @@ export function Footer() {
         <div className="grid gap-8 lg:grid-cols-4">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-primary">SparkleClean</span>
+              <span className="text-xl font-bold text-primary">Deep-Clean</span>
             </div>
             <p className="text-sm text-gray-500">
               Professional property cleaning services with skilled workers and advanced equipment.
@@ -86,7 +86,7 @@ export function Footer() {
         </div>
         <div className="mt-8 border-t pt-8">
           <p className="text-center text-xs text-gray-500">
-            © {new Date().getFullYear()} SparkleClean. All rights reserved.
+            © {new Date().getFullYear()} Deep-Clean. All rights reserved.
           </p>
         </div>
       </div>
