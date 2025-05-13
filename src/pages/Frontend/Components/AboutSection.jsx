@@ -47,7 +47,7 @@ export function AboutSection() {
           {/* Image Section */}
           <Col xs={24} lg={12} style={{ textAlign: 'center' }}>
             <Image
-              src="/placeholder.svg?height=550&width=550"
+              src="https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=550&width=550"
               alt="Our cleaning equipment"
               width={550}
               height={550}

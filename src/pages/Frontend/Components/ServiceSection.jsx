@@ -9,32 +9,32 @@ const services = [
   {
     title: 'Residential Cleaning',
     description: 'Complete home cleaning services including kitchens, bathrooms, living areas, and bedrooms.',
-    image: '/placeholder.svg?height=100&width=100',
+    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
   },
   {
     title: 'Commercial Cleaning',
     description: 'Professional cleaning for offices, retail spaces, and commercial properties.',
-    image: '/placeholder.svg?height=100&width=100',
+    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
   },
   {
     title: 'Deep Cleaning',
     description: 'Thorough cleaning of hard-to-reach areas and detailed attention to all surfaces.',
-    image: '/placeholder.svg?height=100&width=100',
+    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
   },
   {
     title: 'Move In/Out Cleaning',
     description: "Comprehensive cleaning services for when you're moving in or out of a property.",
-    image: '/placeholder.svg?height=100&width=100',
+    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
   },
   {
     title: 'Window Cleaning',
     description: 'Professional window cleaning for crystal clear results inside and out.',
-    image: '/placeholder.svg?height=100&width=100',
+    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
   },
   {
     title: 'Carpet Cleaning',
     description: 'Deep carpet cleaning using professional equipment and eco-friendly products.',
-    image: '/placeholder.svg?height=100&width=100',
+    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
   },
 ]
 
