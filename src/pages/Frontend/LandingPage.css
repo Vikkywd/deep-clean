@@ -1,0 +1,25 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.backdrop-blur-md {
+  backdrop-filter: blur(8px);
+}
+
+.ant-card-cover {
+  transition: transform 0.3s ease;
+}
+
+.ant-card:hover .ant-card-cover {
+  transform: scale(1.02);
+}
+
+.ant-btn-primary {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.ant-form-item-label > label {
+  color: #15803d;
+  font-weight: 500;
+}

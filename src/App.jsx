@@ -4,6 +4,7 @@ import Dashboard from './pages/Layout/Dashboard'
 import ProductList from './components/productList'
 import Customers from './pages/Customer/customers'
 import BookingForm from './pages/Booking/BookingForm'
+import LandingPage from './pages/Frontend/LandingPage'
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -12,7 +13,9 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path='/' element={<Login />} />
+        <Route path='/' element={<LandingPage />} />
+
+          <Route path='/login' element={<Login />} />
           {/* <Route path='/dashboard' element={<Dashboard/>} />
         <Route path='/product' element={<ProductList/>} /> */}
 
