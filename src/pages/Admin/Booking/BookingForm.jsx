@@ -1,174 +1,143 @@
-import React, { useState } from 'react';
-import { 
-  Steps, 
-  Form, 
-  Input, 
-  Button, 
-  Select, 
-  DatePicker, 
-  TimePicker, 
-  Card, 
-  Divider, 
-  Avatar,
-  Row, 
-  Col 
-} from 'antd';
-import { 
-  HomeOutlined, 
-  CalendarOutlined, 
-  UserOutlined, 
-  CheckCircleOutlined 
-} from '@ant-design/icons';
-import { FaBroom, FaMapMarkerAlt } from 'react-icons/fa';
+import { Button, Form, Input, Select, DatePicker, Typography, Row, Col } from 'antd';
+import 'tailwindcss/tailwind.css';
 
-const { Step } = Steps;
-const { Option } = Select;
+const { TextArea } = Input;
+const { Title, Paragraph } = Typography;
 
 const BookingForm = () => {
-  const [currentStep, setCurrentStep] = useState(0);
   const [form] = Form.useForm();
 
-  const steps = [
-    { title: 'Service', icon: <FaBroom /> },
-    { title: 'Time', icon: <CalendarOutlined /> },
-    { title: 'Details', icon: <UserOutlined /> },
-  ];
-
-  const services = [
-    { name: 'Deep Cleaning', emoji: '🧹', price: '$150' },
-    { name: 'Move-In/Move-Out', emoji: '🚚', price: '$200' },
-    { name: 'Carpet Cleaning', emoji: '🧽', price: '$120' },
-  ];
-
-  const handleNext = () => setCurrentStep(currentStep + 1);
-  const handlePrev = () => setCurrentStep(currentStep - 1);
-
-  const handleSubmit = ()=>{
-    const datas = form.getFieldsValue(); 
-    console.log('datas: <<<<<>>>>', datas);
-  }
+  const onFinish = (values) => {
+    console.log('Booking Submitted:', values);
+  };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <Card 
-        title={
-          <div style={{ textAlign: 'center' }}>
-            <Avatar 
-              size={64} 
-              icon={<HomeOutlined />} 
-              style={{ backgroundColor: '#1890ff', marginBottom: '10px' }} 
-            />
-            <h1 style={{ margin: '0', color: '#1890ff' }}>Book a Deep Cleaning</h1>
-            <p>Get your property sparkling clean in 3 easy steps!</p>
-          </div>
-        }
-        bordered={false}
-        style={{ 
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-          borderRadius: '10px',
-        }}
-      >
-        <Steps current={currentStep} style={{ marginBottom: '30px' }}>
-          {steps.map((step) => (
-            <Step key={step.title} title={step.title} icon={step.icon} />
-          ))}
-        </Steps>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-5xl">
+        <div className="text-center mb-8 animate-fade-in">
+          <Title level={2} className="text-4xl font-extrabold text-gray-900 tracking-tight">
+             Booking Form
+          </Title>
+          <Paragraph className="text-lg text-gray-600 mt-2">
+            Seamlessly manage cleaning service bookings
+          </Paragraph>
+        </div>
 
-        <Form 
-        form={form} 
-        onFinish={handleSubmit}
-        layout="vertical"
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
+          autoComplete="off"
+          className="animate-slide-up"
         >
-          {/* STEP 1: Service Selection */}
-          {currentStep === 0 && (
-            <div style={{ textAlign: 'center' }}>
-              <h3>Select a Service</h3>
-              <Row gutter={16} style={{ marginTop: '20px' }}>
-                {services.map((service) => (
-                  <Col span={8} key={service.name}>
-                    <Card
-                      hoverable
-                      onClick={() => form.setFieldsValue({ service: service.name })}
-                      style={{
-                        border: form.getFieldValue('service') === service.name 
-                          ? '2px solid #1890ff' 
-                          : '1px solid #f0f0f0',
-                        borderRadius: '8px',
-                      }}
-                    >
-                      <div style={{ fontSize: '24px' }}>{service.emoji}</div>
-                      <h4>{service.name}</h4>
-                      <p>{service.price}</p>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </div>
-          )}
-
-          {/* STEP 2: Date & Time */}
-          {currentStep === 1 && (
-            <>
-              <h3>When do you need us?</h3>
-              <Form.Item name="date" label="Date" rules={[{ required: true }]}>
-                <DatePicker 
-                  style={{ width: '100%' }} 
-                  suffixIcon={<CalendarOutlined />} 
-                />
-              </Form.Item>
-              <Form.Item name="time" label="Time Slot" rules={[{ required: true }]}>
-                <TimePicker.RangePicker style={{ width: '100%' }} />
-              </Form.Item>
-              <Form.Item name="location" label="Property Address">
-                <Input 
-                  prefix={<FaMapMarkerAlt />} 
-                  placeholder="Enter your address" 
-                />
-              </Form.Item>
-            </>
-          )}
-
-          {/* STEP 3: User Details */}
-          {currentStep === 2 && (
-            <>
-              <h3>Your Information</h3>
-              <Form.Item name="name" label="Full Name" rules={[{ required: true }]}>
-                <Input placeholder="John Doe" />
-              </Form.Item>
-              <Form.Item name="email" label="Email" rules={[{ type: 'email' }]}>
-                <Input placeholder="john@example.com" />
-              </Form.Item>
-              <Form.Item name="phone" label="Phone" rules={[{ required: true }]}>
-                <Input placeholder="+1 (123) 456-7890" />
-              </Form.Item>
-              <Form.Item name="notes" label="Special Instructions">
-                <Input.TextArea placeholder="e.g., 'Focus on kitchen grease'" />
-              </Form.Item>
-            </>
-          )}
-
-          <Divider />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {currentStep > 0 && (
-              <Button onClick={handlePrev}>Back</Button>
-            )}
-            {currentStep < steps.length - 1 ? (
-              <Button type="primary" onClick={handleNext}>
-                Next
-              </Button>
-            ) : (
-              <Button 
-               htmlType='submit'
-                type="primary" 
-                icon={<CheckCircleOutlined />} 
-                style={{ background: '#52c41a', borderColor: '#52c41a' }}
+          <Row gutter={24}>
+            {/* Left Column */}
+            <Col xs={24} md={12}>
+              <Form.Item
+                label="Full Name"
+                name="name"
+                rules={[{ required: true, message: 'Please enter the client’s name' }]}
               >
-                Confirm Booking
-              </Button>
-            )}
-          </div>
+                <Input placeholder="John Doe" className="rounded-xl py-3 px-4" />
+              </Form.Item>
+
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  { required: true, message: 'Please enter the client’s email' },
+                  { type: 'email', message: 'Enter a valid email address' },
+                ]}
+              >
+                <Input placeholder="john.doe@example.com" className="rounded-xl py-3 px-4" />
+              </Form.Item>
+
+              <Form.Item
+                label="Phone"
+                name="phone"
+                rules={[{ required: true, message: 'Please enter the client’s phone number' }]}
+              >
+                <Input placeholder="(555) 123-4567" className="rounded-xl py-3 px-4" />
+              </Form.Item>
+
+              <Form.Item
+                label="Preferred Date"
+                name="date"
+                rules={[{ required: true, message: 'Please select a date' }]}
+              >
+                <DatePicker className="w-full rounded-xl py-3 px-4" />
+              </Form.Item>
+            </Col>
+
+            {/* Right Column */}
+            <Col xs={24} md={12}>
+              <Form.Item
+                label="Property Address"
+                name="address"
+                rules={[{ required: true, message: 'Please enter the property address' }]}
+              >
+                <Input placeholder="123 Main St, City, State, ZIP" className="rounded-xl py-3 px-4" />
+              </Form.Item>
+
+              <Form.Item
+                label="Property Type"
+                name="propertyType"
+                rules={[{ required: true, message: 'Please select property type' }]}
+              >
+                <Select placeholder="Select property type" className="rounded-xl">
+                  <Select.Option value="apartment">Apartment</Select.Option>
+                  <Select.Option value="house">House</Select.Option>
+                  <Select.Option value="condo">Condo</Select.Option>
+                  <Select.Option value="office">Office</Select.Option>
+                  <Select.Option value="other">Other</Select.Option>
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                label="Square Footage (approximate)"
+                name="squareFootage"
+                rules={[{ required: true, message: 'Please enter square footage' }]}
+              >
+                <Input
+                  type="number"
+                  placeholder="1000"
+                  className="rounded-xl py-3 px-4"
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col span={24}>
+              <Form.Item
+                label="Special Instructions"
+                name="specialInstructions"
+              >
+                <TextArea
+                  rows={4}
+                  placeholder="Any specific areas or special instructions..."
+                  className="rounded-xl py-3 px-4"
+                />
+              </Form.Item>
+
+              <Form.Item>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-6 rounded-xl transition-transform hover:scale-105"
+                >
+                  Submit Booking
+                </Button>
+              </Form.Item>
+
+              <Paragraph className="text-center text-sm text-gray-500">
+                All bookings are subject to admin approval and availability.
+              </Paragraph>
+            </Col>
+          </Row>
         </Form>
-      </Card>
+      </div>
     </div>
   );
 };

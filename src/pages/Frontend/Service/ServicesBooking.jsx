@@ -6,7 +6,7 @@ import { Footer } from '../Components/Footer'
 const { TextArea } = Input
 const { Title, Paragraph } = Typography
 
-export function ServiceBooking() {
+const ServiceBooking = ()=> {
   const [form] = Form.useForm()
 
   const onFinish = (values) => {
@@ -121,3 +121,6 @@ export function ServiceBooking() {
 
   )
 }
+
+
+export default ServiceBooking;

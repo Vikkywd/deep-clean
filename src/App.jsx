@@ -5,7 +5,7 @@ import ProductList from './components/productList'
 import Customers from './pages/Admin/Customer/Customers'
 import BookingForm from './pages/Admin/Booking/BookingForm'
 import LandingPage from './pages/Frontend/LandingPage'
-import { ServiceBooking } from './pages/Frontend/Service/ServicesBooking'
+import ServiceBooking  from './pages/Frontend/Service/ServicesBooking'
 import Enquire from './pages/Admin/Enquire/Enquire'
 
 function App() {
