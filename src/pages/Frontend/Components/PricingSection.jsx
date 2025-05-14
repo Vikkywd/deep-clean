@@ -133,7 +133,7 @@ export function PricingSection() {
           <div style={{ display: 'inline-block', backgroundColor: '#d1fae5', padding: '4px 12px', borderRadius: 6 }}>
             <Text style={{ color: '#065f46', fontWeight: 500 }}>Pricing</Text>
           </div>
-          <Title level={2} style={{ marginTop: 16 }}>Transparent & Competitive Pricing</Title>
+          <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Transparent & Competitive Pricing</h2>
           <Text style={{ fontSize: 16, color: '#6b7280' }}>
             We offer flexible packages to suit your needs and budget.
           </Text>

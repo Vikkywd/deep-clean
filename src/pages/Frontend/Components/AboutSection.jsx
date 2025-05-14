@@ -26,34 +26,23 @@ export function AboutSection() {
               <Tag color="green" style={{ width: 'fit-content' }}>
                 About Us
               </Tag>
-              <Title level={2} style={{ fontSize: '1.5rem' }}>
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
                 Skilled Professionals with Advanced Equipment
-              </Title>
-              <Paragraph type="secondary" style={{ fontSize: '1rem' }}>
+              </h2>
+              <p className="max-w-[600px] text-gray-500 md:text-xl">
                 Our team consists of trained and experienced cleaning professionals who take pride in delivering
                 exceptional results.
-              </Paragraph>
+              </p>
 
               {/* List of Features */}
-              <List
-                dataSource={features}
-                split={false}
-                style={{ padding: 0, margin: 0 }}
-                renderItem={(item) => (
-                  <List.Item
-                    style={{
-                      padding: '4px 0',
-                      margin: 0,
-                      border: 'none',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <CheckCircleOutlined style={{ color: '#52c41a', marginRight: 8 }} />
-                      <Text style={{ marginLeft: 10 }}>{item}</Text>
-                    </div>
-                  </List.Item>
-                )}
-              />
+               <ul className="grid gap-2">
+              {features.map((item, index) => (
+                <li key={index} className="flex items-center gap-2">
+                  <CheckCircleOutlined className="h-5 w-5 text-green-600" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
             </Space>
           </Col>
 

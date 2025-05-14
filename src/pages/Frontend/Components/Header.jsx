@@ -1,48 +1,56 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+
 import { Button } from 'antd'
 import { useEffect, useState } from 'react'
 import { MenuOutlined, CloseOutlined } from '@ant-design/icons'
-import { Link as ScrollLink } from 'react-scroll'
+import { scroller } from 'react-scroll';
+
+
 
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const [menuOpen, setMenuOpen] = useState(false)
+    const location = useLocation()
+    const navigate = useNavigate()
 
     useEffect(() => {
+        //header effect on scroll
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 10)
         }
-
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
+
+    const handleNavClick = (target) => {
+        if (location.pathname === '/') {
+            scroller.scrollTo(target, {
+                smooth: 'easeInOutQuart', // smoother easing
+                duration: 800,             // longer duration
+                offset: -60,
+            })
+        } else {
+            navigate('/', { state: { scrollTo: target } })
+        }
+    }
 
     const toggleMenu = () => {
         setMenuOpen(!menuOpen)
     }
 
-    const linkProps = {
-        spy: true,
-        smooth: true,
-        offset: -60, // adjust if header overlaps
-        duration: 500,
-        activeClass: 'text-primary',
-      }
-
     const menuItems = (
         <>
-            <ScrollLink  to="services" {...linkProps}  className="text-sm font-medium hover:text-primary">Services</ScrollLink >
-            <ScrollLink to="about" {...linkProps} className="text-sm font-medium hover:text-primary">About Us</ScrollLink>
-            <ScrollLink to="testimonials" {...linkProps} className="text-sm font-medium hover:text-primary">Testimonials</ScrollLink>
-            <ScrollLink to="pricing" {...linkProps} className="text-sm font-medium hover:text-primary">Pricing</ScrollLink>
-            <ScrollLink to="contact" {...linkProps} className="text-sm font-medium hover:text-primary">Contact</ScrollLink>
+            <button onClick={() => handleNavClick('services')} className="text-sm font-medium hover:text-primary">Services</button >
+            <button onClick={() => handleNavClick('about')} className="text-sm font-medium hover:text-primary">About Us</button>
+            <button onClick={() => handleNavClick('testimonials')} className="text-sm font-medium hover:text-primary">Testimonials</button>
+            <button onClick={() => handleNavClick('pricing')} className="text-sm font-medium hover:text-primary">Pricing</button>
+            <button onClick={() => handleNavClick('contact')} className="text-sm font-medium hover:text-primary">Contact</button>
         </>
     )
 
     return (
-        <header className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
-            isScrolled ? 'bg-green-100' : 'bg-green-200'
-        }`}>
+        <header className={`sticky top-0 z-40 border-b transition-colors duration-300 ${isScrolled ? 'bg-green-100' : 'bg-green-200'
+            }`}>
             <div className="container mx-auto flex h-16 items-center justify-between px-4 py-4">
                 <div className="flex items-center gap-2">
                     <span className="text-xl font-bold text-primary"><Link to='/'> Deep-Clean</Link></span>

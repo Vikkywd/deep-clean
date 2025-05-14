@@ -69,7 +69,7 @@ export function TestimonialsSection() {
               marginBottom: 16,
             }}
           />
-          <Title level={2}>What Our Clients Say</Title>
+           <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">What Our Clients Say</h2>
           <Text style={{ color: '#6b7280', fontSize: 16 }}>
             Don’t just take our word for it. Here’s what our satisfied customers have to say.
           </Text>

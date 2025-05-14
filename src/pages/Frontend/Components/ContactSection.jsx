@@ -24,7 +24,7 @@ export function ContactSection() {
                 <Text type="success" style={{ background: '#f6ffed', padding: '4px 12px', borderRadius: 8 }}>
                   Contact Us
                 </Text>
-                <Title level={2} style={{ marginTop: 12 }}>Get in Touch</Title>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Get in Touch</h2>
                 <Paragraph type="secondary">
                   Ready to experience the difference? Contact us today for a free quote or to schedule a cleaning.
                 </Paragraph>

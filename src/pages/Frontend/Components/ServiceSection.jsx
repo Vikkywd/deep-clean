@@ -98,7 +98,8 @@ export function ServicesSection() {
               marginBottom: 16,
             }}
           />
-          <Title level={2}>Comprehensive Cleaning Solutions</Title>
+          <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Comprehensive Cleaning Solutions</h2>
+          {/* <Title level={2}>Comprehensive Cleaning Solutions</Title> */}
           <Text style={{ color: '#6b7280', fontSize: 16 }}>
             We offer a wide range of professional cleaning services tailored to your specific needs.
           </Text>
