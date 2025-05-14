@@ -8,6 +8,7 @@ import LandingPage from './pages/Frontend/LandingPage'
 import ServiceBooking  from './pages/Frontend/Service/ServicesBooking'
 import Enquire from './pages/Admin/Enquire/Enquire'
 import TaskList from './pages/Admin/TaskAssign/TaskList'
+import TaskDetails from './pages/Admin/TaskAssign/TaskDetails'
 
 function App() {
 
@@ -24,6 +25,8 @@ function App() {
           <Route path="/book" element={<Dashboard children={<BookingForm/>} heading={"Booking Form"}/>} />
           <Route path='/service-booking' element={<ServiceBooking />} />
           <Route path='/tasks' element={<Dashboard children={<TaskList/>} heading={"Assigned Jobs"}/>}  />
+          <Route path="/task/:id" element={<TaskDetails />} />
+
 
         </Routes>
       </Router>

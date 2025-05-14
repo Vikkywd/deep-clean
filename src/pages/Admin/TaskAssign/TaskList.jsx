@@ -40,7 +40,7 @@ const TaskList = () => {
         {
             title: 'Action',
             render: (record) => (
-                <Button onClick={() => navigate(`/worker/job/${record.id}`)}>View</Button>
+                <Button onClick={() => navigate(`/task/${record.id}`)}>View</Button>
             ),
         },
     ];
