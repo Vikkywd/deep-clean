@@ -1,179 +1,140 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Tag } from 'antd';
+import { Table, Typography, Input } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
-
+const { Title } = Typography;
 
 function Enquire() {
-    const [datas, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const location = useLocation();
-    const { search } = location;
+  const [datas, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const location = useLocation();
+  const { search } = location;
 
-    const TableHeading = [
-        {
-          title: 'Name',
-          dataIndex: 'name',
-          render: (text, row) => (
-            <Link className='text-blue-400' to={`${row.service_id}`}>
-              {text}
-            </Link>
-          ),
-        },
-        {
-          title: 'Category',
-          dataIndex: ['typeObj', 'name'],
-        },
-        {
-          title: 'CIty',
-          dataIndex: ['addressObj', 'newCity', 'city'],
-        },
-        {
-          title: 'State',
-          dataIndex: ['addressObj', 'newState', 'state'],
-        },
-       
-        {
-          title: 'Owner name',
-          dataIndex: ['ownerObj', 'name'],
-          render: (data) => data || 'Not Specified',
-        },
-        {
-          title: 'Owner number',
-          dataIndex: ['ownerObj', 'phone'],
-          render: (data) => data || 'Not Specified',
-        },
-      
-        {
-          title: 'Date',
-          dataIndex: 'experiance',
-        },
+  const handleSearch = (e) => {
+    setSearchText(e.target.value.toLowerCase());
+  };
 
+  const filteredData = datas.filter((item) =>
+    item.name.toLowerCase().includes(searchText)
+  );
+
+  const TableHeading = [
+    {
+      title: 'S.no',
+      dataIndex: '_id',
+      render: (text, row, index) => index + 1,
+      width: 80,
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: (text, row) => (
+        <Link className="text-blue-500" to={`${row.service_id}`}>
+          {text}
+        </Link>
+      ),
+    },
+    {
+      title: 'Category',
+      dataIndex: ['typeObj', 'name'],
+      filters: [
+        { text: 'Decor', value: 'Decor' },
+        { text: 'Cleaning', value: 'Cleaning' },
+        // Add more categories as needed
+      ],
+      onFilter: (value, record) => record.typeObj.name === value,
+    },
+    {
+      title: 'City',
+      dataIndex: ['addressObj', 'newCity', 'city'],
+      sorter: (a, b) =>
+        a.addressObj?.newCity?.city.localeCompare(b.addressObj?.newCity?.city),
+    },
+    {
+      title: 'State',
+      dataIndex: ['addressObj', 'newState', 'state'],
+      filters: [
+        { text: 'Gujarat', value: 'Gujarat' },
+        { text: 'Maharashtra', value: 'Maharashtra' },
+        // Add more states as needed
+      ],
+      onFilter: (value, record) =>
+        record.addressObj?.newState?.state === value,
+    },
+    {
+      title: 'Owner',
+      dataIndex: ['ownerObj', 'name'],
+      render: (data) => data || 'Not Specified',
+    },
+    {
+      title: 'Owner Number',
+      dataIndex: ['ownerObj', 'phone'],
+      render: (data) => data || 'Not Specified',
+    },
+    {
+      title: 'Experience',
+      dataIndex: 'experiance',
+      sorter: (a, b) =>
+        parseInt(a.experiance) - parseInt(b.experiance),
+    },
+    {
+      title: 'Customers Served',
+      dataIndex: 'customers_served',
+      sorter: (a, b) => parseInt(a.customers_served) - parseInt(b.customers_served),
+    },
+  ];
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setData([
         {
-          title: 'Action',
-          dataIndex: 'customers_served',
+          _id: '6032827875ab6731543e1d96',
+          service_id: '6',
+          name: 'Poonam Decor',
+          experiance: '10',
+          customers_served: '111',
+          typeObj: { name: 'Decor' },
+          addressObj: {
+            newCity: { city: 'Morbi' },
+            newState: { state: 'Gujarat' },
+          },
+          ownerObj: {
+            name: 'Rakesh Sharma',
+            phone: '4657687980',
+          },
         },
-      ];
+      ]);
+      setLoading(false);
+    }, 500);
+  }, [search]);
 
-    useEffect(() => {
-        setLoading(true);
-        setData([
-            {
-                "_id": "6032827875ab6731543e1d96",
-                "tag": [
-                    "Quality",
-                    "Best"
-                ],
-                "service_id": "6",
-                "name": "Poonam Decor",
-                "type": "5",
-                "description": "Provides best services in area.",
-                "experiance": "10 Years",
-                "image": null,
-                "customers_served": "111",
-                "address": "6",
-                "owner": "6",
-                "addressObj": {
-                    "_id": "60320a8e75ab6731543e19ed",
-                    "id": "6",
-                    "street1": "Everest Park 2",
-                    "street2": "Kalavad Road",
-                    "city": "6",
-                    "state": "1",
-                    "country": "91",
-                    "zipcode": "360001",
-                    "newCity": {
-                        "_id": "60321bed75ab6731543e1b7c",
-                        "id": "6",
-                        "city": "Morbi",
-                        "state": "1",
-                        "country": "91"
-                    },
-                    "newState": {
-                        "_id": "60321ca475ab6731543e1c9b",
-                        "id": "1",
-                        "state": "Gujarat"
-                    },
-                    "newCountry": {
-                        "_id": "60321c8475ab6731543e1c0a",
-                        "country": "India",
-                        "calling_code": "91"
-                    }
-                },
-                "typeObj": {
-                    "_id": "60321c2c75ab6731543e1b85",
-                    "id": "5",
-                    "name": "Decor"
-                },
-                "ownerObj": {
-                    "services": [
-                        "6"
-                    ],
-                    "_id": "6032825e75ab6731543e1d74",
-                    "id": "6",
-                    "name": "Rakesh Sharma",
-                    "phone": "4657687980",
-                    "email": "rakesh@dummy.com",
-                    "gender": "Male",
-                    "address": "5",
-                    "addressObj": {
-                        "_id": "60320a8e75ab6731543e19ec",
-                        "id": "5",
-                        "street1": "Everest Park 2",
-                        "street2": "Kalavad Road",
-                        "city": "5",
-                        "state": "1",
-                        "country": "91",
-                        "zipcode": "360001",
-                        "newCity": {
-                            "_id": "60321bed75ab6731543e1b7b",
-                            "id": "5",
-                            "city": "jamnagar",
-                            "state": "1",
-                            "country": "91"
-                        },
-                        "newState": {
-                            "_id": "60321ca475ab6731543e1c9b",
-                            "id": "1",
-                            "state": "Gujarat"
-                        },
-                        "newCountry": {
-                            "_id": "60321c8475ab6731543e1c0a",
-                            "country": "India",
-                            "calling_code": "91"
-                        }
-                    }
-                }
-            }
-        ])
-        setLoading(false);
-
-        // axios
-        //   .post(API.services, getArrayParams(search))
-        //   .then((res) => {
-        //     if (res.data.success) {
-        //       setData(res.data.data);
-        //       setLoading(false);
-        //     }
-        //   })
-        //   .catch((e) => {
-        //     setLoading(false);
-        //   });
-    }, [search]);
-
-    return !loading ? (
-        <Table
-            loading={loading}
-            columns={TableHeading}
-            bordered
-            rowKey={(render) => render._id}
-            dataSource={datas}
-            pagination={{ pageSize: 20 }}
-            scroll={{ x: 1300 }}
+  return (
+    <div className="p-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-3">
+        <Title level={4} className="!mb-0">
+          Total - {filteredData.length}
+        </Title>
+        <Input
+          placeholder="Search by name..."
+          style={{ width: 250 }}
+          allowClear
+          onChange={handleSearch}
         />
-    ) : (
-        "loading..."
-        // <Spinner />
-    );
+      </div>
+
+      <Table
+        loading={loading}
+        columns={TableHeading}
+        bordered
+        rowKey={(render) => render._id}
+        dataSource={filteredData}
+        pagination={{ pageSize: 10 }}
+        scroll={{ x: 1200 }}
+      />
+    </div>
+  );
 }
 
 export default Enquire;
