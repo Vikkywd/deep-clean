@@ -2,6 +2,12 @@
 
 import React from 'react'
 import { Card, Col, Row, Typography, Badge } from 'antd'
+import carpetClean from '../../../images/carpet.jpeg'
+import moveInOut from '../../../images/moveInOut.jpeg'
+import commercialClean from '../../../images/commercialClean.jpeg'
+import windowClean from '../../../images/window.jpeg'
+import deepClean from '../../../images/deepclean.jpeg'
+import residencialClean from '../../../images/residencialClean.jpeg'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -9,32 +15,32 @@ const services = [
   {
     title: 'Residential Cleaning',
     description: 'Complete home cleaning services including kitchens, bathrooms, living areas, and bedrooms.',
-    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
+    image: residencialClean,
   },
   {
     title: 'Commercial Cleaning',
     description: 'Professional cleaning for offices, retail spaces, and commercial properties.',
-    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
+    image: commercialClean,
   },
   {
     title: 'Deep Cleaning',
     description: 'Thorough cleaning of hard-to-reach areas and detailed attention to all surfaces.',
-    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
+    image: deepClean,
   },
   {
     title: 'Move In/Out Cleaning',
     description: "Comprehensive cleaning services for when you're moving in or out of a property.",
-    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
+    image: moveInOut,
   },
   {
     title: 'Window Cleaning',
     description: 'Professional window cleaning for crystal clear results inside and out.',
-    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
+    image: windowClean,
   },
   {
     title: 'Carpet Cleaning',
     description: 'Deep carpet cleaning using professional equipment and eco-friendly products.',
-    image: 'https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=100&width=100',
+    image: carpetClean,
   },
 ]
 

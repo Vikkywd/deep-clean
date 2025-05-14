@@ -3,7 +3,7 @@
 import React from 'react'
 import { Row, Col, Typography, List, Space, Tag, Image } from 'antd'
 import { CheckCircleOutlined } from '@ant-design/icons'
-// import Image from 'next/image'
+import skilledWorker from '../../../images/skilledWorker.jpeg'
 
 const { Title, Paragraph, Text } = Typography
 
@@ -47,7 +47,7 @@ export function AboutSection() {
           {/* Image Section */}
           <Col xs={24} lg={12} style={{ textAlign: 'center' }}>
             <Image
-              src="https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=550&width=550"
+              src={skilledWorker}
               alt="Our cleaning equipment"
               width={550}
               height={550}

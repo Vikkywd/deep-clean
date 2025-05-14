@@ -16,7 +16,7 @@ const Header = () => {
 
     return (
         <header className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
-            isScrolled ? 'bg-gray-900' : 'bg-background'
+            isScrolled ? 'bg-green-100' : 'bg-green-200'
         }`}>
             <div className="container flex h-16 items-center justify-between py-4">
                 <div className="flex items-center gap-2">
