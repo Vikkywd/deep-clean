@@ -90,6 +90,12 @@ function Dashboard({ children, heading }) {
             </Menu.Item>
           </SubMenu>
 
+          <SubMenu key={'4'} title='Task List' icon={<UserOutlined />}>
+            <Menu.Item key="41" icon={<UserOutlined />} >
+              <Link to="/tasks">Enquire List</Link>
+            </Menu.Item>
+          </SubMenu>
+
         </Menu>
       </div>
 

@@ -7,6 +7,7 @@ import BookingForm from './pages/Admin/Booking/BookingForm'
 import LandingPage from './pages/Frontend/LandingPage'
 import ServiceBooking  from './pages/Frontend/Service/ServicesBooking'
 import Enquire from './pages/Admin/Enquire/Enquire'
+import TaskList from './pages/Admin/TaskAssign/TaskList'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/customers" element={<Dashboard children={<Customers/>} heading={"Customer's List"}/>} />
           <Route path="/book" element={<Dashboard children={<BookingForm/>} heading={"Booking Form"}/>} />
           <Route path='/service-booking' element={<ServiceBooking />} />
+          <Route path='/tasks' element={<Dashboard children={<TaskList/>} heading={"Assigned Jobs"}/>}  />
 
         </Routes>
       </Router>
