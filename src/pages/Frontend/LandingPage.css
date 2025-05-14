@@ -23,3 +23,10 @@
   color: #15803d;
   font-weight: 500;
 }
+
+
+.wow-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+  border-color: #16a34a !important;
+}

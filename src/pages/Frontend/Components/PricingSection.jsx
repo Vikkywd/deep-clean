@@ -10,7 +10,7 @@ const { Title, Text, Paragraph } = Typography
 const pricingPlans = [
   {
     title: 'Basic Clean',
-    price: '$120',
+    price: '₹120',
     description: 'Perfect for regular maintenance cleaning',
     features: [
       'Dusting all accessible surfaces',
@@ -22,7 +22,7 @@ const pricingPlans = [
   },
   {
     title: 'Deep Clean',
-    price: '$220',
+    price: '₹220',
     description: 'Thorough cleaning for homes needing extra attention',
     features: [
       'All Basic Clean services',
@@ -36,7 +36,7 @@ const pricingPlans = [
   },
   {
     title: 'Move In/Out',
-    price: '$320',
+    price: '₹320',
     description: 'Comprehensive cleaning for moving transitions',
     features: [
       'All Deep Clean services',
@@ -50,27 +50,45 @@ const pricingPlans = [
 ]
 
 const PricingPlan = ({ title, price, description, features, highlighted }) => (
-  <Col xs={24} md={8}>
+   <Col xs={24} md={8}>
     <Badge.Ribbon
       text="Most Popular"
       color="green"
-      style={{ display: highlighted ? 'block' : 'none' }}
+      style={{
+        display: highlighted ? 'block' : 'none',
+        fontWeight: 'bold',
+        fontSize: 14,
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+      }}
     >
       <Card
         bordered
-        className={highlighted ? 'border-green-600 shadow-lg' : 'shadow-sm'}
-        style={{ borderColor: highlighted ? '#16a34a' : undefined }}
+        className="wow-card"
+        style={{
+          borderColor: highlighted ? '#16a34a' : '#d1d5db',
+          borderRadius: 16,
+          transition: 'all 0.4s ease',
+          overflow: 'hidden',
+          boxShadow: highlighted
+            ? '0 12px 30px rgba(22, 163, 74, 0.2)'
+            : '0 6px 20px rgba(0,0,0,0.05)',
+        }}
         bodyStyle={{ padding: 24 }}
       >
-        <Title level={4}>{title}</Title>
+        <Title level={4} style={{ marginBottom: 12 }}>{title}</Title>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
           <Title level={2} style={{ marginBottom: 0 }}>{price}</Title>
           <Text type="secondary">/ per visit</Text>
         </div>
-        <Paragraph type="secondary">{description}</Paragraph>
+        <Paragraph type="secondary" style={{ marginTop: 8 }}>{description}</Paragraph>
         <ul style={{ marginTop: 16, paddingLeft: 20 }}>
           {features.map((feature, idx) => (
-            <li key={idx} style={{ marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <li key={idx} style={{
+              marginBottom: 8,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 8,
+            }}>
               <CheckCircleOutlined style={{ color: '#16a34a' }} />
               <Text>{feature}</Text>
             </li>
@@ -82,9 +100,20 @@ const PricingPlan = ({ title, price, description, features, highlighted }) => (
             style={{
               marginTop: 24,
               width: '100%',
-              backgroundColor: highlighted ? '#16a34a' : undefined,
-              borderColor: highlighted ? '#16a34a' : undefined,
+              background: highlighted ? 'linear-gradient(90deg, #16a34a, #15803d)' : undefined,
+              borderColor: highlighted ? '#15803d' : undefined,
               color: highlighted ? 'white' : undefined,
+              fontWeight: 500,
+              transition: 'all 0.3s ease',
+              boxShadow: highlighted ? '0 8px 20px rgba(22,163,74,0.3)' : undefined,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 12px 30px rgba(22,163,74,0.4)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = highlighted ? '0 8px 20px rgba(22,163,74,0.3)' : 'none';
             }}
           >
             Book Now
@@ -93,6 +122,7 @@ const PricingPlan = ({ title, price, description, features, highlighted }) => (
       </Card>
     </Badge.Ribbon>
   </Col>
+  
 )
 
 export function PricingSection() {
