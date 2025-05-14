@@ -6,9 +6,9 @@ import Customers from './pages/Admin/Customer/Customers'
 import BookingForm from './pages/Admin/Booking/BookingForm'
 import LandingPage from './pages/Frontend/LandingPage'
 import { ServiceBooking } from './pages/Frontend/Service/ServicesBooking'
+import Enquire from './pages/Admin/Enquire/Enquire'
 
 function App() {
-  // const [count, setCount] = useState(0)
 
   return (
     <>
@@ -17,7 +17,7 @@ function App() {
         <Route path='/' element={<LandingPage />} />
 
           <Route path='/login' element={<Login />} />
-          <Route path='/dashboard' element={<Dashboard  children={''}  heading={"Enquire List"}/>}/>
+          <Route path='/dashboard' element={<Dashboard  children={<Enquire/>}  heading={"Enquire List"}/>}/>
           <Route path='/add-category' element={< Dashboard children={<ProductList/>} />} /> 
           <Route path="/customers" element={<Dashboard children={<Customers/>} heading={"Customer's List"}/>} />
           <Route path="/book" element={<Dashboard children={<BookingForm/>} heading={"Booking Form"}/>} />
