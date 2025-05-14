@@ -7,36 +7,36 @@ export function HeroSection() {
     <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-green-50 to-white">
       <div className="container px-4 md:px-6">
         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2">
-          <div className="flex flex-col justify-center space-y-4">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+          <div className="flex flex-col justify-center space-y-6 sm:space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
                 Professional Property Cleaning Services
               </h1>
-              <p className="max-w-[600px] text-gray-500 md:text-xl">
+              <p className="text-gray-500 md:text-xl">
                 Our skilled team and advanced equipment deliver spotless results for homes and businesses.
               </p>
             </div>
-            <div className="flex flex-col gap-2 min-[400px]:flex-row">
-              <Link href="#contact">
-                <Button size="lg" className="px-8">
+            <div className="flex flex-col sm:flex-row sm:gap-6 gap-4">
+              <Link to="#contact" className="w-full sm:w-auto">
+                <Button size="large" className="w-full sm:w-auto px-8">
                   Get a Free Quote
                 </Button>
               </Link>
-              <Link href="#services">
-                <Button size="lg" variant="outline" className="px-8">
+              <Link to="#services" className="w-full sm:w-auto">
+                <Button size="large" type="default" className="w-full sm:w-auto px-8">
                   Our Services
                 </Button>
               </Link>
             </div>
           </div>
+
           <div className="flex items-center justify-center">
             <Image
-            src={homeService}
-              // src="https://kzmp6v81cdn7jyceo19r.lite.vusercontent.net/placeholder.svg?height=550&width=550"
-              width={550}
-              height={550}
+              src={homeService}
               alt="Professional cleaning team"
               className="rounded-lg object-cover"
+              width="100%"
+              height="auto"
               priority
             />
           </div>

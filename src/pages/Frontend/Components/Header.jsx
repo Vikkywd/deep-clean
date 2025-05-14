@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { Button } from 'antd'
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
+import { MenuOutlined, CloseOutlined } from '@ant-design/icons'
+import { Link as ScrollLink } from 'react-scroll'
 
 const Header = () => {
     const [isScrolled, setIsScrolled] = useState(false)
+    const [menuOpen, setMenuOpen] = useState(false)
 
     useEffect(() => {
         const handleScroll = () => {
@@ -14,56 +17,67 @@ const Header = () => {
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
 
+    const toggleMenu = () => {
+        setMenuOpen(!menuOpen)
+    }
+
+    const linkProps = {
+        spy: true,
+        smooth: true,
+        offset: -60, // adjust if header overlaps
+        duration: 500,
+        activeClass: 'text-primary',
+      }
+
+    const menuItems = (
+        <>
+            <ScrollLink  to="services" {...linkProps}  className="text-sm font-medium hover:text-primary">Services</ScrollLink >
+            <ScrollLink to="about" {...linkProps} className="text-sm font-medium hover:text-primary">About Us</ScrollLink>
+            <ScrollLink to="testimonials" {...linkProps} className="text-sm font-medium hover:text-primary">Testimonials</ScrollLink>
+            <ScrollLink to="pricing" {...linkProps} className="text-sm font-medium hover:text-primary">Pricing</ScrollLink>
+            <ScrollLink to="contact" {...linkProps} className="text-sm font-medium hover:text-primary">Contact</ScrollLink>
+        </>
+    )
+
     return (
         <header className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
             isScrolled ? 'bg-green-100' : 'bg-green-200'
         }`}>
-            <div className="container flex h-16 items-center justify-between py-4">
+            <div className="container mx-auto flex h-16 items-center justify-between px-4 py-4">
                 <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-primary">Deep-Clean</span>
+                    <span className="text-xl font-bold text-primary"><Link to='/'> Deep-Clean</Link></span>
                 </div>
+
+                {/* Desktop Nav */}
                 <nav className="hidden md:flex gap-6">
-                    <Link href="#services" className="text-sm font-medium hover:text-primary">
-                        Services
-                    </Link>
-                    <Link href="#about" className="text-sm font-medium hover:text-primary">
-                        About Us
-                    </Link>
-                    <Link href="#testimonials" className="text-sm font-medium hover:text-primary">
-                        Testimonials
-                    </Link>
-                    <Link href="#pricing" className="text-sm font-medium hover:text-primary">
-                        Pricing
-                    </Link>
-                    <Link href="#contact" className="text-sm font-medium hover:text-primary">
-                        Contact
-                    </Link>
+                    {menuItems}
                 </nav>
+
                 <div className="flex items-center gap-4">
-                    <Link href="#contact" className="hidden md:block">
-                        <Button>Get a Quote</Button>
+                    <Link to="/service-booking" className="hidden md:block">
+                        <Button type="primary">Get a Quote</Button>
                     </Link>
-                    <Button variant="outline" size="icon" className="md:hidden">
-                        <span className="sr-only">Toggle menu</span>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="h-6 w-6"
-                        >
-                            <line x1="4" x2="20" y1="12" y2="12" />
-                            <line x1="4" x2="20" y1="6" y2="6" />
-                            <line x1="4" x2="20" y1="18" y2="18" />
-                        </svg>
-                    </Button>
+
+                    {/* Mobile Menu Button */}
+                    <Button
+                        type="default"
+                        size="middle"
+                        className="md:hidden"
+                        onClick={toggleMenu}
+                        icon={menuOpen ? <CloseOutlined /> : <MenuOutlined />}
+                    />
                 </div>
             </div>
+
+            {/* Mobile Nav */}
+            {menuOpen && (
+                <div className="flex flex-col gap-4 px-4 pb-4 md:hidden">
+                    {menuItems}
+                    <Link to="/service-booking">
+                        <Button type="primary" block>Get a Quote</Button>
+                    </Link>
+                </div>
+            )}
         </header>
     )
 }

@@ -13,7 +13,8 @@ export function Footer() {
               Professional property cleaning services with skilled workers and advanced equipment.
             </p>
           </div>
-          <div className="space-y-4">
+          
+          <div className="space-y-2 text-center md:text-left">
             <h4 className="text-sm font-bold uppercase tracking-wider">Services</h4>
             <ul className="space-y-2">
               <li>
@@ -38,7 +39,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-2 text-center md:text-left md:ml-6">
             <h4 className="text-sm font-bold uppercase tracking-wider">Company</h4>
             <ul className="space-y-2">
               <li>
@@ -63,7 +64,7 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-4  text-center md:text-left md:ml-6">
             <h4 className="text-sm font-bold uppercase tracking-wider">Legal</h4>
             <ul className="space-y-2">
               <li>

@@ -54,7 +54,7 @@ function ServiceCard({ title, description, image }) {
         style={{ borderRadius: 12, textAlign: 'center' }}
         bodyStyle={{ padding: 24 }}
       >
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }} id="services">
           <div
             style={{
               backgroundColor: '#d1fae5',
