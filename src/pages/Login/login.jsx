@@ -2,8 +2,9 @@
 
 
 import React, { useState, useEffect, useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Input, Form, Divider, notification, Checkbox } from 'antd';
-import { login } from '../../redux/slices/authSlice';
+import { loginApi } from '../../redux/slices/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   EyeInvisibleOutlined,
@@ -18,6 +19,7 @@ import PublicLayout from '../Layout/PublicLayout';
 // import Logo from '../../Layout/Logo';
 
 const Login = () => {
+  const dispatch = useDispatch()
   const [form] = Form.useForm();
   const [state, setState] = useState({ loader: false, error: false });
 
@@ -27,7 +29,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     setState({ ...state, loader: true });
     const datas = form.getFieldsValue();    
-    const result = await dispatch(login(datas));
+    const result = await dispatch(loginApi(datas));
     // // if (result?.payload) {
       navigate('/dashboard')
     // } else {

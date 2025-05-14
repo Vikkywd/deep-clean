@@ -51,6 +51,10 @@ const handleNavClick = (id) => {
               <li><button to="#" className="text-sm text-primary underline hover:no-underline hover:text-primary/80 bg-transparent border-none p-0 m-0 cursor-pointer">Our Team</button></li>
 
               <li><button to="#" className="text-sm text-primary underline hover:no-underline hover:text-primary/80 bg-transparent border-none p-0 m-0 cursor-pointer">Careers</button></li>
+
+              <li><Link to="/login" className="text-sm text-primary underline hover:no-underline hover:text-primary/80 bg-transparent border-none p-0 m-0 cursor-pointer">Admin</Link></li>
+
+              <li><Link to="/dashboard" className="text-sm text-primary underline hover:no-underline hover:text-primary/80 bg-transparent border-none p-0 m-0 cursor-pointer">Dashboard</Link></li>
               
               <li><button onClick={() => handleNavClick('contact')} className="text-sm text-primary underline hover:no-underline hover:text-primary/80 bg-transparent border-none p-0 m-0 cursor-pointer">Contact</button></li>
             </ul>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'antd';
 import { useLocation } from 'react-router-dom';
-import customerColumns from '../../components/customerTable';
+import customerColumns from '../../../components/customerTable';
 // import Spinner from '../Spinner';
 
 
