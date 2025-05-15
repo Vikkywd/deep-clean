@@ -13,6 +13,8 @@ import DashboardPage from './pages/Admin/DashboardPage'
 import BookingsPage from './pages/Admin/Booking/Booking'
 import WorkersPage from './pages/Admin/Workers/Worker';
 import Invoice from './pages/Admin/Invoices/Invoice'
+import ReportsPage from './pages/Admin/Reports/Reports'
+import SettingsPage from './pages/Admin/Settings/Setting'
 
 function App() {
 
@@ -28,6 +30,8 @@ function App() {
           <Route path='/dashboard/workers' element={<Dashboard children={<WorkersPage/>} />}/>
           <Route path='/dashboard/tasks' element={<Dashboard children={<TaskList/>} />}/>
           <Route path='/dashboard/invoices' element={<Dashboard children={<Invoice/>} />}/>
+          <Route path='/dashboard/reports' element={<Dashboard children={<ReportsPage/>} />}/>
+          <Route path='/dashboard/settings' element={<Dashboard children={<SettingsPage/>} />}/>
           <Route path='/service-booking' element={<ServiceBooking />} />
 
           {/* <Route path='/add-category' element={< Dashboard children={<ProductList/>} />} /> 

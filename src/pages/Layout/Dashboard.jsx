@@ -181,18 +181,18 @@ const Dashboard = ({ children }) => {
       icon: <FileTextOutlined />,
       path: '/dashboard/invoices',
     },
-    // {
-    //   key: 'reports',
-    //   label: 'Reports',
-    //   icon: <BarChartOutlined />,
-    //   path: '/dashboard/reports',
-    // },
-    // {
-    //   key: 'settings',
-    //   label: 'Settings',
-    //   icon: <SettingOutlined />,
-    //   path: '/dashboard/settings',
-    // },
+    {
+      key: 'reports',
+      label: 'Reports',
+      icon: <BarChartOutlined />,
+      path: '/dashboard/reports',
+    },
+    {
+      key: 'settings',
+      label: 'Settings',
+      icon: <SettingOutlined />,
+      path: '/dashboard/settings',
+    },
   ];
 
   const dropdownMenu = (
