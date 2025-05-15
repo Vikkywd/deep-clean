@@ -181,18 +181,18 @@ const Dashboard = ({ children }) => {
       icon: <FileTextOutlined />,
       path: '/dashboard/invoices',
     },
-    {
-      key: 'reports',
-      label: 'Reports',
-      icon: <BarChartOutlined />,
-      path: '/dashboard/reports',
-    },
-    {
-      key: 'settings',
-      label: 'Settings',
-      icon: <SettingOutlined />,
-      path: '/dashboard/settings',
-    },
+    // {
+    //   key: 'reports',
+    //   label: 'Reports',
+    //   icon: <BarChartOutlined />,
+    //   path: '/dashboard/reports',
+    // },
+    // {
+    //   key: 'settings',
+    //   label: 'Settings',
+    //   icon: <SettingOutlined />,
+    //   path: '/dashboard/settings',
+    // },
   ];
 
   const dropdownMenu = (
@@ -243,7 +243,7 @@ const Dashboard = ({ children }) => {
             <span className="hidden sm:inline">CleanPro Admin</span>
           </div>
         </div>
-        <Dropdown overlay={dropdownMenu} placement="bottomRight">
+        <Dropdown menu={dropdownMenu} placement="bottomRight">
           <Button type="text" className="rounded-full p-0">
             <Avatar src="/placeholder-user.jpg" alt="User">
               AD
@@ -255,7 +255,7 @@ const Dashboard = ({ children }) => {
         <Drawer
           placement="left"
           onClose={() => setIsSidebarOpen(false)}
-          visible={isSidebarOpen}
+          open={isSidebarOpen}
           width={256}
           bodyStyle={{ padding: 0 }}
           className="md:hidden"
@@ -310,7 +310,9 @@ const Dashboard = ({ children }) => {
         </Sider>
         <Content className="p-4 md:p-6 bg-gray-100">{children}</Content>
       </Layout>
+      
     </Layout>
+
   );
 };
 

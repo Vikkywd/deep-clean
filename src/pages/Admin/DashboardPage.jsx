@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Card, Table, Tabs, Button, Space, Statistic, Row, Col, Avatar } from 'antd';
-import { CalendarOutlined, UserOutlined,  DollarOutlined, RightOutlined } from '@ant-design/icons';
+import { CalendarOutlined, UserOutlined, DollarOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from '../../components/badge'; 
-
-const { TabPane } = Tabs;
+import 'tailwindcss/tailwind.css';
 
 const DashboardPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -163,7 +162,7 @@ const DashboardPage = () => {
       </div>
 
       <Tabs activeKey={activeTab} onChange={setActiveTab} className="space-y-4">
-        <TabPane tab="Overview" key="overview">
+        <Tabs.TabPane tab="Overview" key="overview">
           <Row gutter={[16, 16]}>
             {stats.map((stat, index) => (
               <Col xs={24} sm={12} lg={6} key={index}>
@@ -254,23 +253,21 @@ const DashboardPage = () => {
               </Card>
             </Col>
           </Row>
-        </TabPane>
-        <TabPane tab="Analytics" key="analytics">
-          <Card>
-            <Card.Title>Analytics</Card.Title>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Analytics" key="analytics">
+          <Card title="Analytics">
             <div className="h-[300px] flex items-center justify-center border rounded-md">
               <p className="text-gray-500">Analytics charts will be displayed here</p>
             </div>
           </Card>
-        </TabPane>
-        <TabPane tab="Reports" key="reports">
-          <Card>
-            <Card.Title>Reports</Card.Title>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Reports" key="reports">
+          <Card title="Reports">
             <div className="h-[300px] flex items-center justify-center border rounded-md">
               <p className="text-gray-500">Reports will be displayed here</p>
             </div>
           </Card>
-        </TabPane>
+        </Tabs.TabPane>
       </Tabs>
     </div>
   );
