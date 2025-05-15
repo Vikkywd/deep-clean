@@ -183,6 +183,7 @@ const Dashboard = ({ children }) => {
           <Content className="wow-content p-4 md:p-6 animate-fade-in">
             {children}
           </Content>
+          
           <Footer className="wow-footer text-center py-4">
             Deep Cleaning ©{new Date().getFullYear()} Created by Vikram
           </Footer>

@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
-import { Table, Input, Button, Select, Modal, Form, Space, Avatar, Checkbox } from 'antd';
-import { SearchOutlined, FilterOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import {
+  Table,
+  Input,
+  Button,
+  Select,
+  Modal,
+  Form,
+  Space,
+  Avatar,
+  Checkbox,
+} from 'antd';
+import {
+  SearchOutlined,
+  FilterOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons';
 import { Badge } from '../../../components/badge';
 
 const { Option } = Select;
@@ -14,7 +28,6 @@ const TasksList = () => {
   const [isCompleteTaskOpen, setIsCompleteTaskOpen] = useState(false);
   const [form] = Form.useForm();
 
-  // Mock data for tasks
   const tasks = [
     {
       id: 'T-1001',
@@ -102,7 +115,6 @@ const TasksList = () => {
     },
   ];
 
-  // Mock data for workers to assign
   const workers = [
     { id: 'W-1001', name: 'David Miller' },
     { id: 'W-1002', name: 'Lisa Chen' },
@@ -112,15 +124,12 @@ const TasksList = () => {
     { id: 'W-1006', name: 'Jennifer Lee' },
   ];
 
-  // Filter tasks based on search query and status filter
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch =
       task.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
       task.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
       task.address.toLowerCase().includes(searchQuery.toLowerCase());
-
     const matchesStatus = statusFilter === 'all' || task.status === statusFilter;
-
     return matchesSearch && matchesStatus;
   });
 
@@ -203,10 +212,10 @@ const TasksList = () => {
             status === 'completed'
               ? 'success'
               : status === 'in-progress'
-                ? 'default'
-                : status === 'assigned'
-                  ? 'outline'
-                  : 'secondary'
+              ? 'default'
+              : status === 'assigned'
+              ? 'outline'
+              : 'secondary'
           }
         >
           {status}
@@ -223,11 +232,7 @@ const TasksList = () => {
             View
           </Button>
           {record.status !== 'completed' && (
-            <Button
-              type="default"
-              size="small"
-              onClick={() => handleCompleteTask(record)}
-            >
+            <Button type="default" size="small" onClick={() => handleCompleteTask(record)}>
               Complete
             </Button>
           )}
@@ -243,14 +248,14 @@ const TasksList = () => {
         <p className="text-gray-500">Manage and assign cleaning tasks to your workers</p>
       </div>
 
-      <div className="flex flex-col gap-4 sm:flex-row">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <div className="flex-1 relative">
-          <SearchOutlined className="absolute left-2.5 top-2.5 text-gray-400" />
+          <SearchOutlined className="absolute left-3 top-3 text-gray-400" />
           <Input
             placeholder="Search tasks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-8 rounded-lg"
+            className="pl-10 rounded-lg"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -258,7 +263,7 @@ const TasksList = () => {
           <Select
             value={statusFilter}
             onChange={(value) => setStatusFilter(value)}
-            className="w-[180px]"
+            className="w-full sm:w-[180px]"
           >
             <Option value="all">All Statuses</Option>
             <Option value="unassigned">Unassigned</Option>
@@ -269,14 +274,16 @@ const TasksList = () => {
         </div>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={filteredTasks}
-        rowKey="id"
-        pagination={false}
-        bordered
-        className="rounded-md"
-      />
+      <div className="overflow-x-auto">
+        <Table
+          columns={columns}
+          dataSource={filteredTasks}
+          rowKey="id"
+          pagination={false}
+          bordered
+          className="rounded-md min-w-[720px]"
+        />
+      </div>
 
       {/* Task Details Modal */}
       <Modal
@@ -289,7 +296,7 @@ const TasksList = () => {
         {selectedTask && (
           <Form form={form} layout="vertical" onFinish={handleAssignWorker}>
             <div className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Task ID</h3>
                   <p>{selectedTask.id}</p>
@@ -307,7 +314,7 @@ const TasksList = () => {
                 <h3 className="font-medium">Service Address</h3>
                 <p>{selectedTask.address}</p>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Service Type</h3>
                   <p>{selectedTask.service}</p>
@@ -317,7 +324,7 @@ const TasksList = () => {
                   <p>{selectedTask.amount}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Date</h3>
                   <p>{selectedTask.date}</p>
@@ -327,7 +334,7 @@ const TasksList = () => {
                   <p>{selectedTask.time}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Worker</h3>
                   <p>{selectedTask.worker}</p>
@@ -339,10 +346,10 @@ const TasksList = () => {
                       selectedTask.status === 'completed'
                         ? 'success'
                         : selectedTask.status === 'in-progress'
-                          ? 'default'
-                          : selectedTask.status === 'assigned'
-                            ? 'outline'
-                            : 'secondary'
+                        ? 'default'
+                        : selectedTask.status === 'assigned'
+                        ? 'outline'
+                        : 'secondary'
                     }
                   >
                     {selectedTask.status}
@@ -400,7 +407,7 @@ const TasksList = () => {
                   <p className="text-sm text-gray-500">Worker assigned to this task</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Task ID</h3>
                   <p>{selectedTask.id}</p>
@@ -410,7 +417,7 @@ const TasksList = () => {
                   <p>{selectedTask.client}</p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Service</h3>
                   <p>{selectedTask.service}</p>
@@ -436,11 +443,7 @@ const TasksList = () => {
               <Form.Item name="completionNotes" label="Completion Notes">
                 <TextArea placeholder="Enter any notes about the completed service" rows={4} />
               </Form.Item>
-              <Form.Item
-                name="generateInvoice"
-                valuePropName="checked"
-                initialValue={false}
-              >
+              <Form.Item name="generateInvoice" valuePropName="checked" initialValue={false}>
                 <Checkbox>Generate invoice for client</Checkbox>
               </Form.Item>
             </div>
