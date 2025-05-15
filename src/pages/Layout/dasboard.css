@@ -1,0 +1,110 @@
+    .wow-header {
+      background: linear-gradient(90deg, #ffffff, #e6f3e6);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid #d9e8d9;
+    }
+    .wow-sider {
+      background: rgba(255, 255, 255, 0.9) !important;
+      backdrop-filter: blur(10px);
+      border-right: 1px solid #d9e8d9;
+      transition: all 0.3s ease;
+    }
+    .wow-drawer .ant-drawer-content {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+    }
+    .ant-menu {
+      background: transparent !important;
+      border-right: none !important;
+    }
+    .ant-menu-item {
+      border-radius: 8px !important;
+      margin: 8px 12px !important;
+      padding: 12px 16px !important;
+      transition: all 0.3s ease;
+      font-size: 16px;
+    }
+    .ant-menu-item:hover {
+      background: #e6f3e6 !important;
+      color: #4caf50 !important;
+    }
+    .ant-menu-item-selected {
+      background: #4caf50 !important;
+      color: white !important;
+    }
+    .ant-menu-item-selected a {
+      color: white !important;
+    }
+    .ant-btn-primary {
+      background: linear-gradient(45deg, #4caf50, #26a69a);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 24px;
+      font-weight: 500;
+      transition: transform 0.2s ease;
+    }
+    .ant-btn-primary:hover {
+      transform: scale(1.05);
+      background: linear-gradient(45deg, #45a049, #2193b0);
+    }
+    .wow-content {
+      background: #f5f7fa;
+      border-radius: 12px;
+      margin: 8px;
+      padding: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease;
+    }
+    .wow-content:hover {
+      transform: translateY(-3px);
+    }
+    .wow-footer {
+      background: linear-gradient(90deg, #ffffff, #e6f3e6);
+      border-top: 1px solid #d9e8d9;
+      color: #4b5563;
+      font-size: 14px;
+    }
+    .animate-fade-in {
+      animation: fade-in 0.5s ease-out;
+    }
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .animate-slide-up {
+      animation: slide-up 0.5s ease-out;
+    }
+    @keyframes slide-up {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @media (min-width: 768px) {
+      .wow-content {
+        margin: 16px;
+        padding: 24px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .wow-content {
+        margin: 24px;
+        padding: 32px;
+      }
+    }
+    @media (max-width: 640px) {
+      .ant-menu-item {
+        font-size: 14px;
+        padding: 10px 14px !important;
+      }
+      .wow-header {
+        padding: 0 12px;
+      }
+      .wow-content {
+        margin: 4px;
+        padding: 12px;
+      }
+      .wow-footer {
+        font-size: 12px;
+        padding: 12px 0;
+      }
+    }
+  

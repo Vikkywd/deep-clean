@@ -1,149 +1,9 @@
-// import React, { useState, } from 'react';
-// import { Menu, Button, Dropdown } from 'antd';
-// import {
-//   TeamOutlined,
-//   UserOutlined,
-//   ProfileOutlined,
-//   LogoutOutlined,
-//   SettingOutlined,
-//   MenuOutlined,
-// } from '@ant-design/icons';
-// import { Link } from 'react-router-dom';
-// import Avatar from 'antd/lib/avatar/avatar';
-
-
-// const { SubMenu } = Menu;
-
-// function Dashboard({ children, heading }) {
-//   const [collapsed, setCollapsed] = useState(false);
-
-//   const toggleCollapsed = () => {
-//     setCollapsed((prevCollapsed) => !prevCollapsed);
-//   };
-
-
-//   const menu = (
-//     <Menu>
-//       <Menu.Item key='1' icon={<ProfileOutlined />}>
-//         <Link to='/'>Profile</Link>
-//       </Menu.Item>
-//       <Menu.Item key='2' icon={<SettingOutlined />}>
-//         <Link to='/'>Setting</Link>
-//       </Menu.Item>
-//       <Menu.Item
-//         key='3'
-//         icon={<LogoutOutlined />}
-//         onClick={() => ""}
-//       >
-//         <Link to='/kkkk'>Logout</Link>
-//       </Menu.Item>
-//     </Menu>
-//   );
-
-//   return (
-//     <div className='flex min-h-screen'>
-//       <div
-//         className={`w-64 bg-gray-900 text-white ${collapsed ? 'collapsed' : ''
-//           } md:overflow-y-auto`}
-//       >
-//         <div className='flex items-center justify-center py-4'>
-//           {/* <Logo /> */} Deep clean
-//         </div>
-//         <Menu
-//           theme='dark'
-//           defaultOpenKeys={['13','21','Enquire List']}
-//           defaultSelectedKeys={['21']}
-//           mode='inline'
-//           className='text-sm'
-//         >
-
-//           <SubMenu key={'1'} title='Enquire List' icon={<UserOutlined />}>
-//             <Menu.Item key="1" icon={<UserOutlined />} >
-//               <Link to="/dashboard">Enquire List</Link>
-//             </Menu.Item>
-//           </SubMenu>
-
-//           <SubMenu key={'2'} title='Bookings' icon={<UserOutlined />}>
-
-//             <Menu.Item key='21' icon={<UserOutlined />}>
-//               <Link to='/customers'>
-//                 All Bookings
-//               </Link>
-//             </Menu.Item>
-
-//             <Menu.Item key='23' icon={<UserOutlined />}>
-//               <Link to='/book'>Add Book</Link>
-//             </Menu.Item>
-
-//           </SubMenu>
-
-//           <SubMenu key={'3'} title='Services' icon={<TeamOutlined />}>
-//             <Menu.Item key='31' icon={<TeamOutlined />}>
-//               <Link to='/add-category'>
-//                 All Services
-//               </Link>
-//             </Menu.Item>
-
-//             <Menu.Item key='32' icon={<TeamOutlined />}>
-//               <Link to='/'>Add Service</Link>
-//             </Menu.Item>
-//           </SubMenu>
-
-//           <SubMenu key={'4'} title='Task List' icon={<UserOutlined />}>
-//             <Menu.Item key="41" icon={<UserOutlined />} >
-//               <Link to="/tasks">Enquire List</Link>
-//             </Menu.Item>
-//           </SubMenu>
-
-//         </Menu>
-//       </div>
-
-//       <div className='flex-1 min-h-screen bg-gray-100'>
-//         <header className='bg-white shadow-md p-4 flex justify-between items-center'>
-//           <Button
-//             icon={<MenuOutlined />}
-//             className='md:hidden'
-//             onClick={toggleCollapsed}
-//           />
-//           <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">{heading}</h2>
-//           <Dropdown menu={menu}>
-//             <Avatar size='large' src='../images/team_01.jpg' />
-//           </Dropdown>
-//         </header>
-
-//         <div>
-//           <main>{children}</main>
-//         </div>
-
-//         <footer className='text-center bg-white py-4'>
-//           Deep Cleaning ©{new Date().getFullYear()} Created by vikram
-//         </footer>
-//       </div>
-
-//     </div>
-//   );
-// }
-
-// export default Dashboard;
-
-
-
-
 import React, { useState } from 'react';
 import { Layout, Menu, Drawer, Button, Dropdown, Avatar, Space } from 'antd';
-import {
-  HomeOutlined,
-  CalendarOutlined,
-  UserOutlined,
-  FileTextOutlined,
-  BarChartOutlined,
-  SettingOutlined,
-  LogoutOutlined,
-  MenuOutlined,
-} from '@ant-design/icons';
+import {HomeOutlined, CalendarOutlined,  UserOutlined,  FileTextOutlined,  BarChartOutlined, SettingOutlined,  LogoutOutlined,  MenuOutlined} from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-
-const { Header, Sider, Content } = Layout;
+import './dasboard.css'
+const { Header, Sider, Content, Footer } = Layout;
 
 const Dashboard = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -200,11 +60,19 @@ const Dashboard = ({ children }) => {
       items={[
         {
           key: 'profile',
-          label: 'Profile',
+          label: (
+            <Link to="/dashboard/profile" onClick={() => navigate('/dashboard/profile')}>
+              Profile
+            </Link>
+          ),
         },
         {
           key: 'settings',
-          label: 'Settings',
+          label: (
+            <Link to="/dashboard/settings" onClick={() => navigate('/dashboard/settings')}>
+              Settings
+            </Link>
+          ),
         },
         {
           type: 'divider',
@@ -217,53 +85,54 @@ const Dashboard = ({ children }) => {
               Log out
             </Space>
           ),
+          onClick: () => navigate('/logout'),
         },
       ]}
+      className="rounded-lg shadow-lg bg-white/90 backdrop-blur-sm"
     />
   );
 
   const selectedKey = routes.find((route) => route.path === location.pathname)?.key || 'dashboard';
 
   return (
-    <Layout className="min-h-screen">
-      <Header
-        className="sticky top-0 z-10 flex items-center justify-between px-4 md:px-6 bg-white shadow-sm"
-        style={{ height: 64, lineHeight: '64px' }}
-      >
-        <div className="flex items-center gap-2">
+    <Layout className="min-h-screen bg-gradient-to-br from-green-50 to-teal-100">
+     
+      <Header className="wow-header sticky top-0 z-10 flex items-center justify-between px-4 md:px-8">
+        <div className="flex items-center gap-3">
           <Button
             type="text"
             icon={<MenuOutlined />}
-            className="md:hidden"
+            className="md:hidden text-gray-700"
             onClick={() => setIsSidebarOpen(true)}
             aria-label="Open Menu"
           />
-          <div className="flex items-center gap-2 text-lg font-semibold">
-            <FileTextOutlined className="text-xl" />
+          <div className="flex items-center gap-2 text-xl font-bold text-gray-800">
+            <FileTextOutlined className="text-2xl text-green-500" />
             <span className="hidden sm:inline">CleanPro Admin</span>
           </div>
         </div>
-        <Dropdown menu={dropdownMenu} placement="bottomRight">
-          <Button type="text" className="rounded-full p-0">
-            <Avatar src="/placeholder-user.jpg" alt="User">
+        <Dropdown overlay={dropdownMenu} placement="bottomRight">
+          <Button type="text" className="rounded-full p-0 hover:bg-green-100">
+            <Avatar src="/placeholder-user.jpg" alt="User" size="large" className="border-2 border-green-200">
               AD
             </Avatar>
           </Button>
         </Dropdown>
       </Header>
+
       <Layout>
         <Drawer
           placement="left"
           onClose={() => setIsSidebarOpen(false)}
           open={isSidebarOpen}
           width={256}
-          styles={{ padding: 0 }}
-          className="md:hidden"
+          bodyStyle={{ padding: 0 }}
+          className="wow-drawer md:hidden"
         >
           <Menu
             mode="inline"
             selectedKeys={[selectedKey]}
-            className="h-full bg-gray-50"
+            className="h-full"
             items={routes.map((route) => ({
               key: route.key,
               icon: route.icon,
@@ -282,15 +151,16 @@ const Dashboard = ({ children }) => {
             }))}
           />
         </Drawer>
+
         <Sider
           width={256}
-          className="hidden md:block bg-gray-50"
+          className="wow-sider hidden md:block"
           style={{ height: 'calc(100vh - 64px)', position: 'sticky', top: 64 }}
         >
           <Menu
             mode="inline"
             selectedKeys={[selectedKey]}
-            className="h-full border-r-0 "
+            className="h-full animate-slide-up"
             items={routes.map((route) => ({
               key: route.key,
               icon: route.icon,
@@ -308,11 +178,17 @@ const Dashboard = ({ children }) => {
             }))}
           />
         </Sider>
-        <Content className="p-4 md:p-6 bg-gray-100">{children}</Content>
-      </Layout>
-      
-    </Layout>
 
+        <Layout>
+          <Content className="wow-content p-4 md:p-6 animate-fade-in">
+            {children}
+          </Content>
+          <Footer className="wow-footer text-center py-4">
+            Deep Cleaning ©{new Date().getFullYear()} Created by Vikram
+          </Footer>
+        </Layout>
+      </Layout>
+    </Layout>
   );
 };
 
