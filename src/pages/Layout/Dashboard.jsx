@@ -141,7 +141,7 @@ import {
   LogoutOutlined,
   MenuOutlined,
 } from '@ant-design/icons';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;
 
@@ -268,8 +268,8 @@ const Dashboard = ({ children }) => {
               key: route.key,
               icon: route.icon,
               label: (
-                <a
-                  href={route.path}
+                <Link
+                  to={route.path}
                   onClick={(e) => {
                     e.preventDefault();
                     navigate(route.path);
@@ -277,7 +277,7 @@ const Dashboard = ({ children }) => {
                   }}
                 >
                   {route.label}
-                </a>
+                </Link>
               ),
             }))}
           />
@@ -290,20 +290,20 @@ const Dashboard = ({ children }) => {
           <Menu
             mode="inline"
             selectedKeys={[selectedKey]}
-            className="h-full border-r-0"
+            className="h-full border-r-0 "
             items={routes.map((route) => ({
               key: route.key,
               icon: route.icon,
               label: (
-                <a
-                  href={route.path}
+                <Link
+                  to={route.path}
                   onClick={(e) => {
                     e.preventDefault();
                     navigate(route.path);
                   }}
                 >
                   {route.label}
-                </a>
+                </Link>
               ),
             }))}
           />

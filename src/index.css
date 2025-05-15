@@ -285,3 +285,12 @@ code {
   --tw-border-opacity: 1;
   border-color: rgba(71, 85, 105, var(--tw-border-opacity));
 }
+
+.ant-menu-item-selected {
+  background-color: black !important;
+  color: #f0f0f0 !important; 
+}
+
+.ant-menu-item-selected .anticon {
+  color: #f0f0f0 !important;
+}

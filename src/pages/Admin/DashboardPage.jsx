@@ -4,7 +4,6 @@ import {
   Table,
   Tabs,
   Button,
-  Space,
   Statistic,
   Row,
   Col,
@@ -18,7 +17,6 @@ import {
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from '../../components/badge';
-import 'tailwindcss/tailwind.css';
 
 const DashboardPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
