@@ -28,10 +28,11 @@ function App() {
           <Route path='/dashboard/workers' element={<Dashboard children={<WorkersPage/>} />}/>
           <Route path='/dashboard/tasks' element={<Dashboard children={<TaskList/>} />}/>
           <Route path='/dashboard/invoices' element={<Dashboard children={<Invoice/>} />}/>
+          <Route path='/service-booking' element={<ServiceBooking />} />
+
           {/* <Route path='/add-category' element={< Dashboard children={<ProductList/>} />} /> 
           <Route path="/customers" element={<Dashboard children={<Customers/>} heading={"Customer's List"}/>} />
           <Route path="/book" element={<Dashboard children={<BookingForm/>} heading={"Booking Form"}/>} />
-          <Route path='/service-booking' element={<ServiceBooking />} />
           <Route path='/tasks' element={<Dashboard children={<TaskList/>} heading={"Assigned Jobs"}/>}  />
           <Route path="/task/:id" element={<Dashboard children={<TaskDetails />}  heading={"Assigned Job"}/>} /> */}
 
