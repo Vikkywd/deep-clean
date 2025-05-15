@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Tabs, Input, Button, Select, Switch, Avatar, Space, Tag, Form } from 'antd';
 import { UserOutlined, HomeOutlined, PhoneOutlined, MailOutlined, SaveOutlined } from '@ant-design/icons';
-import 'tailwindcss/tailwind.css';
 
 const { TabPane } = Tabs;
 const { Option } = Select;

@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import store from './redux/store.js'
 import { Provider } from 'react-redux'
 import '@ant-design/v5-patch-for-react-19';
+import 'tailwindcss/tailwind.css';
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Table, Tabs, Button, Select, DatePicker, Row, Col } from 'antd';
 import { DownloadOutlined, BarChartOutlined, LineChartOutlined, FilterOutlined } from '@ant-design/icons';
-import 'tailwindcss/tailwind.css';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
