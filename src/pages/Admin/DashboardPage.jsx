@@ -1,8 +1,23 @@
 import React, { useState } from 'react';
-import { Card, Table, Tabs, Button, Space, Statistic, Row, Col, Avatar } from 'antd';
-import { CalendarOutlined, UserOutlined, DollarOutlined, RightOutlined } from '@ant-design/icons';
+import {
+  Card,
+  Table,
+  Tabs,
+  Button,
+  Space,
+  Statistic,
+  Row,
+  Col,
+  Avatar,
+} from 'antd';
+import {
+  CalendarOutlined,
+  UserOutlined,
+  DollarOutlined,
+  RightOutlined,
+} from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { Badge } from '../../components/badge'; 
+import { Badge } from '../../components/badge';
 import 'tailwindcss/tailwind.css';
 
 const DashboardPage = () => {
@@ -133,7 +148,11 @@ const DashboardPage = () => {
       render: (status) => (
         <Badge
           variant={
-            status === 'completed' ? 'success' : status === 'assigned' ? 'outline' : 'secondary'
+            status === 'completed'
+              ? 'success'
+              : status === 'assigned'
+              ? 'outline'
+              : 'secondary'
           }
         >
           {status}
@@ -148,21 +167,12 @@ const DashboardPage = () => {
     },
   ];
 
-  return (
-    <div className="space-y-6 p-4">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
-          <p className="text-gray-500">Overview of your cleaning service business</p>
-        </div>
-        <Button type="primary" onClick={() => navigate('/dashboard/bookings')}>
-          <CalendarOutlined className="mr-2" />
-          New Booking
-        </Button>
-      </div>
-
-      <Tabs activeKey={activeTab} onChange={setActiveTab} className="space-y-4">
-        <Tabs.TabPane tab="Overview" key="overview">
+  const tabItems = [
+    {
+      key: 'overview',
+      label: 'Overview',
+      children: (
+        <>
           <Row gutter={[16, 16]}>
             {stats.map((stat, index) => (
               <Col xs={24} sm={12} lg={6} key={index}>
@@ -170,16 +180,23 @@ const DashboardPage = () => {
                   <Statistic
                     title={
                       <div className="flex justify-between items-center">
-                        <span className="text-sm font-medium">{stat.title}</span>
+                        <span className="text-sm font-medium">
+                          {stat.title}
+                        </span>
                         {stat.icon}
                       </div>
                     }
                     value={stat.value}
-                    valueStyle={{ fontSize: '24px', fontWeight: 'bold' }}
+                    valueStyle={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                    }}
                     suffix={
                       <span
                         className={`text-xs ${
-                          stat.trend === 'up' ? 'text-green-500' : 'text-red-500'
+                          stat.trend === 'up'
+                            ? 'text-green-500'
+                            : 'text-red-500'
                         }`}
                       >
                         {stat.change} from last month
@@ -253,22 +270,49 @@ const DashboardPage = () => {
               </Card>
             </Col>
           </Row>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Analytics" key="analytics">
-          <Card title="Analytics">
-            <div className="h-[300px] flex items-center justify-center border rounded-md">
-              <p className="text-gray-500">Analytics charts will be displayed here</p>
-            </div>
-          </Card>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Reports" key="reports">
-          <Card title="Reports">
-            <div className="h-[300px] flex items-center justify-center border rounded-md">
-              <p className="text-gray-500">Reports will be displayed here</p>
-            </div>
-          </Card>
-        </Tabs.TabPane>
-      </Tabs>
+        </>
+      ),
+    },
+    {
+      key: 'analytics',
+      label: 'Analytics',
+      children: (
+        <Card title="Analytics">
+          <div className="h-[300px] flex items-center justify-center border rounded-md">
+            <p className="text-gray-500">Analytics charts will be displayed here</p>
+          </div>
+        </Card>
+      ),
+    },
+    {
+      key: 'reports',
+      label: 'Reports',
+      children: (
+        <Card title="Reports">
+          <div className="h-[300px] flex items-center justify-center border rounded-md">
+            <p className="text-gray-500">Reports will be displayed here</p>
+          </div>
+        </Card>
+      ),
+    },
+  ];
+
+  return (
+    <div className="space-y-6 p-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Dashboard</h2>
+          <p className="text-gray-500">
+            Overview of your cleaning service business
+          </p>
+        </div>
+        <Button type="primary" onClick={() => navigate('/dashboard/bookings')}>
+          <CalendarOutlined className="mr-2" />
+          New Booking
+        </Button>
+      </div>
+
+      <Tabs activeKey={activeTab} onChange={setActiveTab} items={tabItems} />
     </div>
   );
 };

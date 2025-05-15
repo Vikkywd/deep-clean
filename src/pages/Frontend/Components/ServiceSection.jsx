@@ -49,10 +49,10 @@ function ServiceCard({ title, description, image }) {
     <Col xs={24} sm={12} lg={8}>
       <Card
         hoverable
-        bordered
+        variant
         className="shadow-sm"
         style={{ borderRadius: 12, textAlign: 'center' }}
-        bodyStyle={{ padding: 24 }}
+        // style={{ padding: 24 }}
       >
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }} id="services">
           <div

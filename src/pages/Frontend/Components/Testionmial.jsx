@@ -33,7 +33,7 @@ const testimonials = [
 function TestimonialCard({ name, role, content, rating }) {
   return (
     <Col xs={24} sm={12} lg={8}>
-      <Card bordered className="shadow-sm" style={{ borderRadius: 12, height: '100%' }}>
+      <Card variant className="shadow-sm" style={{ borderRadius: 12, height: '100%' }}>
         <div style={{ display: 'flex', gap: 6, marginBottom: 8 }}>
           {Array.from({ length: rating }, (_, i) => (
             <StarFilled key={i} style={{ color: '#facc15', fontSize: 16 }} />

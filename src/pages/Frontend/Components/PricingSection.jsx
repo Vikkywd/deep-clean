@@ -62,7 +62,7 @@ const PricingPlan = ({ title, price, description, features, highlighted }) => (
       }}
     >
       <Card
-        bordered
+        variant
         className="wow-card"
         style={{
           borderColor: highlighted ? '#16a34a' : '#d1d5db',
@@ -73,7 +73,7 @@ const PricingPlan = ({ title, price, description, features, highlighted }) => (
             ? '0 12px 30px rgba(22, 163, 74, 0.2)'
             : '0 6px 20px rgba(0,0,0,0.05)',
         }}
-        bodyStyle={{ padding: 24 }}
+        // bodyStyle={{ padding: 24 }}
       >
         <Title level={4} style={{ marginBottom: 12 }}>{title}</Title>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>

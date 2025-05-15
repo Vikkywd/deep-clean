@@ -49,7 +49,7 @@ export function ContactSection() {
 
           {/* Contact Form */}
           <Col xs={24} lg={14}>
-            <Card bordered>
+            <Card variant>
               <Form layout="vertical">
                 <Row gutter={16}>
                   <Col xs={24} md={12}>

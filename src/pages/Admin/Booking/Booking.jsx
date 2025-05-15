@@ -204,7 +204,7 @@ const BookingsPage = () => {
 
       <Modal
         title="Create New Booking"
-        visible={isNewBookingOpen}
+        open={isNewBookingOpen}
         onCancel={() => setIsNewBookingOpen(false)}
         footer={null}
         width={600}

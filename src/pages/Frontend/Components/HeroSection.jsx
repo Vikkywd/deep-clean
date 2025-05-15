@@ -50,7 +50,7 @@ export function HeroSection() {
               className="rounded-lg object-cover"
               width="100%"
               height="auto"
-              priority
+              priority="true"
             />
           </div>
         </div>

@@ -257,7 +257,7 @@ const Dashboard = ({ children }) => {
           onClose={() => setIsSidebarOpen(false)}
           open={isSidebarOpen}
           width={256}
-          bodyStyle={{ padding: 0 }}
+          styles={{ padding: 0 }}
           className="md:hidden"
         >
           <Menu
