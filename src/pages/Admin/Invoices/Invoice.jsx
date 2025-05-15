@@ -11,7 +11,6 @@ const Invoice = () => {
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [isInvoiceDetailsOpen, setIsInvoiceDetailsOpen] = useState(false);
 
-  // Mock data for invoices
   const invoices = [
     {
       id: 'INV-1001',
