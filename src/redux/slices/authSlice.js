@@ -6,7 +6,7 @@ const loginApi = createAsyncThunk('user/login', async (data) => {
     try {
         const {email, password} = data;
         const result = await axios.post(API.AdminLogin, {email,password})
-        localStorage.setItem('token', result.data.accessToken);
+        localStorage.setItem('token', result.data.data.token);
         return result.data;
     } catch (error) {
         console.log('error: ', error);
