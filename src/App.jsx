@@ -1,5 +1,5 @@
 import Login from './pages/Login/login'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Dashboard from './pages/Layout/Dashboard'
 import BookingForm from './pages/Admin/Booking/BookingForm'
 import LandingPage from './pages/Frontend/LandingPage'
@@ -16,14 +16,14 @@ import SettingsPage from './pages/Admin/Settings/Setting'
 import PrivateRoute from './components/PrivateRoutes'
 
 function App() {
-
+  const token = localStorage.getItem('token');
   return (
     <>
       <Router>
         <Routes>
         <Route path='/' element={<LandingPage />} />
 
-          <Route path='/login' element={<Login />} />
+          <Route path='/login' element={token ? <Navigate to='/dashboard' replace/>: <Login />} />
           
           <Route element={<PrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard children={<DashboardPage/>}/>}/>
@@ -33,6 +33,7 @@ function App() {
           <Route path='/dashboard/invoices' element={<Dashboard children={<Invoice/>} />}/>
           <Route path='/dashboard/reports' element={<Dashboard children={<ReportsPage/>} />}/>
           <Route path='/dashboard/settings' element={<Dashboard children={<SettingsPage/>} />}/>
+          <Route path='/dashboard/enquire' element={<Dashboard children={<Enquire/>} />}/>
           </Route>
           <Route path='/service-booking' element={<ServiceBooking />} />
 

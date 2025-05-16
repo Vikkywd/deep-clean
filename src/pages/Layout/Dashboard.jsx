@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu, Drawer, Button, Dropdown, Avatar, Space } from 'antd';
-import {HomeOutlined, CalendarOutlined,  UserOutlined,  FileTextOutlined,  BarChartOutlined, SettingOutlined,  LogoutOutlined,  MenuOutlined} from '@ant-design/icons';
+import {HomeOutlined, CalendarOutlined,  UserOutlined, ImportOutlined, FileTextOutlined,  BarChartOutlined, SettingOutlined,  LogoutOutlined,  MenuOutlined} from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './dasboard.css'
 const { Header, Sider, Content, Footer } = Layout;
@@ -48,11 +48,18 @@ const Dashboard = ({ children }) => {
       path: '/dashboard/reports',
     },
     {
+      key: 'enquire',
+      label: 'Enquire',
+      icon: <ImportOutlined />,
+      path: '/dashboard/enquire',
+    },
+    {
       key: 'settings',
       label: 'Settings',
       icon: <SettingOutlined />,
       path: '/dashboard/settings',
     },
+    
   ];
 
   const dropdownMenu = (

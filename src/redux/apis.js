@@ -2,7 +2,10 @@ const API_END_POINT = 'http://localhost:8006/api';
 const VERSION = 'v1'
 
 const routes = {
-    AdminLogin: 'admin-login'
+    AdminLogin: 'admin-login',
+    UserEnquire: 'add-enquire',
+    EnquireList: 'enquire-list',
+    DeleteEnquire: 'delete-enquire'
 }
 
 const API = {};
