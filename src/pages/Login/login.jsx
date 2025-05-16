@@ -1,7 +1,7 @@
 
 
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Input, Form, Divider, notification, Checkbox } from 'antd';
 import { loginApi } from '../../redux/slices/authSlice';
@@ -16,8 +16,6 @@ import {
 } from '@ant-design/icons';
 import PublicLayout from '../Layout/PublicLayout';
 
-// import Logo from '../../Layout/Logo';
-
 const Login = () => {
   const dispatch = useDispatch()
   const [form] = Form.useForm();
@@ -28,19 +26,31 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     setState({ ...state, loader: true });
-    const datas = form.getFieldsValue();    
-    const result = await dispatch(loginApi(datas));
-    // // if (result?.payload) {
-      navigate('/dashboard')
-    // } else {
-    //   throw new Error('Something went wroung!')
-    // }
+    const datas = form.getFieldsValue();
+    try {
+      const result = await dispatch(loginApi(datas));
+      if (result?.payload) {
+        notification.success({
+          message: 'Login Successfully!',
+          placement: 'topRight',
+        });
+        navigate('/dashboard')
+      } else {
+        throw new Error('Something went wroung!')
+      }
+    } catch (error) {
+      notification.error({
+        message: 'Login Failed',
+        placement: 'topRight',
+      });
+      setState({ ...state, loader: false })
+    }
+
   };
 
   return (
     <PublicLayout>
-
-    <div className=' p-8 bg-white rounded-lg shadow-lg text-center'>
+      <div className=' p-8 bg-white rounded-lg shadow-lg text-center'>
         <div className='flex align-middle justify-center items-center'>
           {/* <Logo />  */} Deep clean
         </div>
@@ -114,11 +124,11 @@ const Login = () => {
         <p className='text-lg mt-8'>
           Don't Have an Account?{' '}
           <Link className='text-blue-400' to='/registration'>
-             now
+            now
           </Link>
         </p>
       </div>
-      </PublicLayout>
+    </PublicLayout>
 
   );
 }
