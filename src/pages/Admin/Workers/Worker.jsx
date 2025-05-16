@@ -1,96 +1,121 @@
-import React, { useState } from 'react';
-import { Card, Input, Button, Modal, Form, Select, Space, Avatar, Rate } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Card, Input, Button, Modal, Form, Select, Space, Avatar, Rate, notification } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
-import { Badge } from '../../../components/badge'; 
-import 'tailwindcss/tailwind.css';
+import { Badge } from '../../../components/badge';
+import { useDispatch } from 'react-redux';
+import { AddWorker, WorkerList, } from '../../../redux/slices/workerSlice';
 
 const { Option } = Select;
 
 const WorkersPage = () => {
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
   const [isNewWorkerOpen, setIsNewWorkerOpen] = useState(false);
   const [form] = Form.useForm();
+  // const [workers, setWorkers] = useState([
+  //   {
+  //     id: 'W-1001',
+  //     name: 'David Miller',
+  //     email: 'david.miller@example.com',
+  //     phone: '(555) 123-4567',
+  //     specialties: ['Deep Cleaning', 'Window Cleaning'],
+  //     rating: 4.9,
+  //     status: 'active',
+  //     tasksCompleted: 245,
+  //     joinDate: '2023-01-15',
+  //   },
+  //   {
+  //     id: 'W-1002',
+  //     name: 'Lisa Chen',
+  //     email: 'lisa.chen@example.com',
+  //     phone: '(555) 234-5678',
+  //     specialties: ['Regular Cleaning', 'Move-out Cleaning'],
+  //     rating: 4.8,
+  //     status: 'active',
+  //     tasksCompleted: 198,
+  //     joinDate: '2023-02-20',
+  //   },
+  //   {
+  //     id: 'W-1003',
+  //     name: 'James Wilson',
+  //     email: 'james.wilson@example.com',
+  //     phone: '(555) 345-6789',
+  //     specialties: ['Carpet Cleaning', 'Deep Cleaning'],
+  //     rating: 4.7,
+  //     status: 'active',
+  //     tasksCompleted: 176,
+  //     joinDate: '2023-03-10',
+  //   },
+  //   {
+  //     id: 'W-1004',
+  //     name: 'Maria Rodriguez',
+  //     email: 'maria.rodriguez@example.com',
+  //     phone: '(555) 456-7890',
+  //     specialties: ['Regular Cleaning', 'Window Cleaning'],
+  //     rating: 4.6,
+  //     status: 'active',
+  //     tasksCompleted: 152,
+  //     joinDate: '2023-04-05',
+  //   },
+  //   {
+  //     id: 'W-1005',
+  //     name: 'Robert Johnson',
+  //     email: 'robert.johnson@example.com',
+  //     phone: '(555) 567-8901',
+  //     specialties: ['Deep Cleaning', 'Move-out Cleaning'],
+  //     rating: 4.5,
+  //     status: 'inactive',
+  //     tasksCompleted: 120,
+  //     joinDate: '2023-05-15',
+  //   },
+  //   {
+  //     id: 'W-1006',
+  //     name: 'Jennifer Lee',
+  //     email: 'jennifer.lee@example.com',
+  //     phone: '(555) 678-9012',
+  //     specialties: ['Regular Cleaning', 'Carpet Cleaning'],
+  //     rating: 4.9,
+  //     status: 'active',
+  //     tasksCompleted: 135,
+  //     joinDate: '2023-06-20',
+  //   },
+  // ]);
+  const [workers, setWorkers] = useState([]);
+  const getWorkerList = async () => {
+    let { payload } = await dispatch(WorkerList());
+    setWorkers(payload?.data?.data)
+  }
 
-  // Mock data for workers
-  const workers = [
-    {
-      id: 'W-1001',
-      name: 'David Miller',
-      email: 'david.miller@example.com',
-      phone: '(555) 123-4567',
-      specialties: ['Deep Cleaning', 'Window Cleaning'],
-      rating: 4.9,
-      status: 'active',
-      tasksCompleted: 245,
-      joinDate: '2023-01-15',
-    },
-    {
-      id: 'W-1002',
-      name: 'Lisa Chen',
-      email: 'lisa.chen@example.com',
-      phone: '(555) 234-5678',
-      specialties: ['Regular Cleaning', 'Move-out Cleaning'],
-      rating: 4.8,
-      status: 'active',
-      tasksCompleted: 198,
-      joinDate: '2023-02-20',
-    },
-    {
-      id: 'W-1003',
-      name: 'James Wilson',
-      email: 'james.wilson@example.com',
-      phone: '(555) 345-6789',
-      specialties: ['Carpet Cleaning', 'Deep Cleaning'],
-      rating: 4.7,
-      status: 'active',
-      tasksCompleted: 176,
-      joinDate: '2023-03-10',
-    },
-    {
-      id: 'W-1004',
-      name: 'Maria Rodriguez',
-      email: 'maria.rodriguez@example.com',
-      phone: '(555) 456-7890',
-      specialties: ['Regular Cleaning', 'Window Cleaning'],
-      rating: 4.6,
-      status: 'active',
-      tasksCompleted: 152,
-      joinDate: '2023-04-05',
-    },
-    {
-      id: 'W-1005',
-      name: 'Robert Johnson',
-      email: 'robert.johnson@example.com',
-      phone: '(555) 567-8901',
-      specialties: ['Deep Cleaning', 'Move-out Cleaning'],
-      rating: 4.5,
-      status: 'inactive',
-      tasksCompleted: 120,
-      joinDate: '2023-05-15',
-    },
-    {
-      id: 'W-1006',
-      name: 'Jennifer Lee',
-      email: 'jennifer.lee@example.com',
-      phone: '(555) 678-9012',
-      specialties: ['Regular Cleaning', 'Carpet Cleaning'],
-      rating: 4.9,
-      status: 'active',
-      tasksCompleted: 135,
-      joinDate: '2023-06-20',
-    },
-  ];
+  useEffect(() => {
+    getWorkerList()
+  }, [setWorkers])
+
 
   // Filter workers based on search query
   const filteredWorkers = workers.filter((worker) =>
-    worker.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    (worker.name || '').toLowerCase().includes((searchQuery || '').toLowerCase())
+);
 
   const handleAddWorker = () => {
-    form.validateFields().then((values) => {
-      console.log('New Worker:', values);
-      setIsNewWorkerOpen(false);
-      form.resetFields();
+    form.validateFields().then(async (values) => {
+         
+      const { payload } = await dispatch(AddWorker(values))
+      if (payload?.data?.success) {
+        setIsNewWorkerOpen(false);
+        form.resetFields();
+        await getWorkerList()
+        notification.success({
+          message: 'Worker Added Successfully!',
+          placement: 'topRight',
+        });
+
+      } else {
+        notification.error({
+          message: 'Try Again!',
+          placement: 'topRight',
+        });
+      }
+
     });
   };
 
@@ -195,7 +220,7 @@ const WorkersPage = () => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <Avatar src="/placeholder-user.jpg">
-                    {worker.name
+                    {(worker.name || '')
                       .split(' ')
                       .map((n) => n[0])
                       .join('')}
@@ -214,19 +239,19 @@ const WorkersPage = () => {
             <div className="p-4">
               <div className="grid gap-2 text-sm">
                 <div>
-                  <span className="font-medium">ID:</span> {worker.id}
+                  <span className="font-medium">ID:</span> {worker._id}
                 </div>
                 <div>
                   <span className="font-medium">Phone:</span> {worker.phone}
                 </div>
                 <div>
-                  <span className="font-medium">Specialties:</span> {worker.specialties.join(', ')}
+                  <span className="font-medium">Specialties:</span> {worker?.specialties.join(', ')}
                 </div>
                 <div>
-                  <span className="font-medium">Tasks Completed:</span> {worker.tasksCompleted}
+                  <span className="font-medium">Tasks Completed:</span> {worker.tasks_completed}
                 </div>
                 <div>
-                  <span className="font-medium">Joined:</span> {worker.joinDate}
+                  <span className="font-medium">Joined:</span> {worker.joined}
                 </div>
                 <div className="flex items-center">
                   <span className="font-medium mr-1">Rating:</span>

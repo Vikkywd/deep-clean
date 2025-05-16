@@ -5,7 +5,9 @@ const routes = {
     AdminLogin: 'admin-login',
     UserEnquire: 'add-enquire',
     EnquireList: 'enquire-list',
-    DeleteEnquire: 'delete-enquire'
+    DeleteEnquire: 'delete-enquire',
+    WorkerList: 'get-workers',
+    AddWorker: 'add-worker'
 }
 
 const API = {};
