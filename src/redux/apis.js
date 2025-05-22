@@ -9,7 +9,9 @@ const routes = {
     WorkerList: 'get-workers',
     AddWorker: 'add-worker',
     AddBooking: 'add-booking',
-    AllBooking: 'all-booking'
+    AllBooking: 'all-booking',
+    AssignTask: 'assign-task',
+    WorkerTaskList: 'worker-task-list'
 }
 
 const API = {};

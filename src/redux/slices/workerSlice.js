@@ -13,10 +13,21 @@ const AddWorker = createAsyncThunk('user/add-worker', async(data)=>{
     return result;
 })
 
+const AssignTask = createAsyncThunk('user/assign-task', async(data)=>{
+    const result = axios.post(API.AssignTask, data);
+    return result
+})
+
+const WorkerTaskList = createAsyncThunk('user/worker-task-list', async(data)=>{
+    const result = await axios.post(API.WorkerTaskList, {workerId: data});
+    return result;
+})
+
 const worker = createSlice({
     name: 'worker',
     initialState: {
         workerData : [],
+        taskList:[],
         success: true,
         error: null
     },
@@ -27,8 +38,17 @@ const worker = createSlice({
             state.success = action.payload.success;
             state.error = null
         })
+        builder.addCase(AssignTask.fulfilled, async(state,action)=>{
+            state.success = action.payload.success;
+            state.error = action.payload.error;
+        })
+        builder.addCase(WorkerTaskList.fulfilled, async(state,action)=>{
+            state.taskList = action.payload.data;
+            state.success = action.payload.success;
+            state.error = action.payload.error;
+        })
     }
 });
 
-export {WorkerList, AddWorker}
+export {WorkerList, AddWorker, AssignTask, WorkerTaskList}
 export default worker.reducer;
