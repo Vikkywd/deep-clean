@@ -1,144 +1,90 @@
-import { Button, Form, Input, Select, DatePicker, Typography, Row, Col } from 'antd';
-import 'tailwindcss/tailwind.css';
+import { Button, Form, Input, Select, DatePicker, InputNumber, notification, } from 'antd';
+import { AddBooking } from '../../../redux/slices/bookingSlice';
+import moment from 'moment';
+import { useDispatch } from 'react-redux';
 
 const { TextArea } = Input;
-const { Title, Paragraph } = Typography;
 
-const BookingForm = () => {
+const BookingForm = ({onClose }) => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
 
-  const onFinish = (values) => {
+  const handleCreateBooking = async(values) => {
     console.log('Booking Submitted:', values);
+    const allBooking = await dispatch(AddBooking(values));
+    form.resetFields();
+    if(allBooking){
+      notification.success({
+        message: 'Booking Added Successfully!',
+        placement: 'topRight'
+      });
+      onClose()
+    }else{
+      notification.error({
+        message: 'Something went wroung!',
+        placement: 'topRight'
+      });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-5xl">
-        <div className="text-center mb-8 animate-fade-in">
-          <Title level={2} className="text-4xl font-extrabold text-gray-900 tracking-tight">
-             Booking Form
-          </Title>
-          <Paragraph className="text-lg text-gray-600 mt-2">
-            Seamlessly manage cleaning service bookings
-          </Paragraph>
-        </div>
-
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={onFinish}
-          autoComplete="off"
-          className="animate-slide-up"
-        >
-          <Row gutter={24}>
-            {/* Left Column */}
-            <Col xs={24} md={12}>
-              <Form.Item
-                label="Full Name"
-                name="name"
-                rules={[{ required: true, message: 'Please enter the client’s name' }]}
-              >
-                <Input placeholder="John Doe" className="rounded-xl py-3 px-4" />
-              </Form.Item>
-
-              <Form.Item
-                label="Email"
-                name="email"
-                rules={[
-                  { required: true, message: 'Please enter the client’s email' },
-                  { type: 'email', message: 'Enter a valid email address' },
-                ]}
-              >
-                <Input placeholder="john.doe@example.com" className="rounded-xl py-3 px-4" />
-              </Form.Item>
-
-              <Form.Item
-                label="Phone"
-                name="phone"
-                rules={[{ required: true, message: 'Please enter the client’s phone number' }]}
-              >
-                <Input placeholder="(555) 123-4567" className="rounded-xl py-3 px-4" />
-              </Form.Item>
-
-              <Form.Item
-                label="Preferred Date"
-                name="date"
-                rules={[{ required: true, message: 'Please select a date' }]}
-              >
-                <DatePicker className="w-full rounded-xl py-3 px-4" />
-              </Form.Item>
-            </Col>
-
-            {/* Right Column */}
-            <Col xs={24} md={12}>
-              <Form.Item
-                label="Property Address"
-                name="address"
-                rules={[{ required: true, message: 'Please enter the property address' }]}
-              >
-                <Input placeholder="123 Main St, City, State, ZIP" className="rounded-xl py-3 px-4" />
-              </Form.Item>
-
-              <Form.Item
-                label="Property Type"
-                name="propertyType"
-                rules={[{ required: true, message: 'Please select property type' }]}
-              >
-                <Select placeholder="Select property type" className="rounded-xl">
-                  <Select.Option value="apartment">Apartment</Select.Option>
-                  <Select.Option value="house">House</Select.Option>
-                  <Select.Option value="condo">Condo</Select.Option>
-                  <Select.Option value="office">Office</Select.Option>
-                  <Select.Option value="other">Other</Select.Option>
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                label="Square Footage (approximate)"
-                name="squareFootage"
-                rules={[{ required: true, message: 'Please enter square footage' }]}
-              >
-                <Input
-                  type="number"
-                  placeholder="1000"
-                  className="rounded-xl py-3 px-4"
-                />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col span={24}>
-              <Form.Item
-                label="Special Instructions"
-                name="specialInstructions"
-              >
-                <TextArea
-                  rows={4}
-                  placeholder="Any specific areas or special instructions..."
-                  className="rounded-xl py-3 px-4"
-                />
-              </Form.Item>
-
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  block
-                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-6 rounded-xl transition-transform hover:scale-105"
-                >
-                  Submit Booking
-                </Button>
-              </Form.Item>
-
-              <Paragraph className="text-center text-sm text-gray-500">
-                All bookings are subject to admin approval and availability.
-              </Paragraph>
-            </Col>
-          </Row>
+    <Form form={form} layout="vertical" onFinish={handleCreateBooking}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Form.Item name="clientName" label="Client Name" rules={[{ required: true }]}>
+              <Input placeholder="Enter client name" />
+            </Form.Item>
+            <Form.Item name="phone" label="Phone Number" rules={[{ required: true }]}>
+              <Input placeholder="(555) 123-4567" />
+            </Form.Item>
+          </div>
+          <Form.Item name="propertyAddress" label="Address" rules={[{ required: true }]}>
+            <Input placeholder="Enter service address" />
+          </Form.Item>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Form.Item name="service" label="Service Type" rules={[{ required: true }]}>
+              <Select placeholder="Select service">
+                <Option value="regular">Regular Cleaning</Option>
+                <Option value="deep">Deep Cleaning</Option>
+                <Option value="window">Window Cleaning</Option>
+                <Option value="carpet">Carpet Cleaning</Option>
+                <Option value="moveout">Move-out Cleaning</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name="serviceDate" label="Service Date" rules={[{ required: true }]}>
+              <DatePicker
+                className="w-full"
+                format="YYYY-MM-DD"
+                disabledDate={(current) => current && current < moment().startOf('day')}
+              />
+            </Form.Item>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Form.Item name="serviceTime" label="Service Time" rules={[{ required: true }]}>
+              <Select placeholder="Select time">
+                <Option value="9am">9:00 AM</Option>
+                <Option value="10am">10:00 AM</Option>
+                <Option value="11am">11:00 AM</Option>
+                <Option value="12pm">12:00 PM</Option>
+                <Option value="1pm">1:00 PM</Option>
+                <Option value="2pm">2:00 PM</Option>
+                <Option value="3pm">3:00 PM</Option>
+                <Option value="4pm">4:00 PM</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item name="amount" label="Amount ($)" rules={[{ required: true }]}>
+              <InputNumber min={0} step={0.01} placeholder="0.00" className="w-full" />
+            </Form.Item>
+          </div>
+          <Form.Item name="notes" label="Additional Notes">
+            <TextArea rows={4} placeholder="Enter any special instructions or requirements" />
+          </Form.Item>
+          <div className="flex flex-col sm:flex-row justify-end gap-2">
+            <Button onClick={() => setIsNewBookingOpen(false)}>Cancel</Button>
+            <Button type="primary" htmlType="submit">
+              Create Booking
+            </Button>
+          </div>
         </Form>
-      </div>
-    </div>
   );
 };
 

@@ -7,7 +7,9 @@ const routes = {
     EnquireList: 'enquire-list',
     DeleteEnquire: 'delete-enquire',
     WorkerList: 'get-workers',
-    AddWorker: 'add-worker'
+    AddWorker: 'add-worker',
+    AddBooking: 'add-booking',
+    AllBooking: 'all-booking'
 }
 
 const API = {};
