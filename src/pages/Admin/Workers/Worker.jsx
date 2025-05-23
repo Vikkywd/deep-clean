@@ -4,7 +4,7 @@ import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import { Badge } from '../../../components/badge';
 import { useDispatch, useSelector } from 'react-redux';
 import { AddWorker, WorkerList, AssignTask, WorkerTaskList } from '../../../redux/slices/workerSlice';
-// import { AllBooking } from '../../../redux/slices/bookingSlice';
+import { AllBooking } from '../../../redux/slices/bookingSlice';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -21,7 +21,6 @@ const WorkersPage = () => {
   const bookingList = useSelector(state => state.booking.allBookings);
   const [bookings, setBookings] = useState(bookingList  || []);
 
-  console.log('bookingList: >>>', bookingList);
   const [workerTasks, setWorkerTasks] = useState([]);
 
 
@@ -34,16 +33,18 @@ const WorkersPage = () => {
   };
 
   // // Fetch bookings
-  // const getBookingList = async () => {
-  //   const { payload } = await dispatch(AllBooking());
-  //   // filter only active bookings
-  //   const all = payload?.data?.data || [];
-  //   setBookings(all.filter(b => b.status === 'assigned' || b.status === 'pending'));
-  // };
+  const getBookingList = async () => {
+    const { payload } = await dispatch(AllBooking());
+    // filter only active bookings
+    const all = payload?.data?.data || [];
+    setBookings(all.filter(b => b.status === 'assigned' || b.status === 'pending'));
+  };
 
   useEffect(() => {
     getWorkerList();
-    // getBookingList();
+    if(!bookingList.length){
+    getBookingList();
+    }
   }, []);
 
   // Filter workers

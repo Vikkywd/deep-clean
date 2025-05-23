@@ -8,8 +8,8 @@ const AddBooking = createAsyncThunk('admin/add-booking', async(data)=>{
 
 });
 
-const AllBooking = createAsyncThunk('admin/all-booking', async()=>{
-        const result = await axios.post(API.AllBooking, {});
+const AllBooking = createAsyncThunk('admin/all-booking', async(data)=>{
+        const result = await axios.post(API.AllBooking, {status: data});
         return result
 })
 
