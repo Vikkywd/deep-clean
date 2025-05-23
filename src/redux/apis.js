@@ -11,7 +11,8 @@ const routes = {
     AddBooking: 'add-booking',
     AllBooking: 'all-booking',
     AssignTask: 'assign-task',
-    WorkerTaskList: 'worker-task-list'
+    WorkerTaskList: 'worker-task-list',
+    TaskList: 'task-list'
 }
 
 const API = {};

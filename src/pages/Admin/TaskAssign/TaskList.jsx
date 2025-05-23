@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Table,
   Input,
@@ -16,126 +16,140 @@ import {
   CheckCircleOutlined,
 } from '@ant-design/icons';
 import { Badge } from '../../../components/badge';
+import { useDispatch } from 'react-redux';
+import { TaskList } from '../../../redux/slices/workerSlice';
+import moment from 'moment';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 const TasksList = () => {
+  const dispatch = useDispatch()
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedTask, setSelectedTask] = useState(null);
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
   const [isCompleteTaskOpen, setIsCompleteTaskOpen] = useState(false);
   const [form] = Form.useForm();
+  const [tasks, settask] = useState([])
 
-  const tasks = [
-    {
-      id: 'T-1001',
-      bookingId: 'B-1001',
-      client: 'John Smith',
-      address: '123 Main St, Anytown',
-      service: 'Deep Cleaning',
-      date: '2025-05-14',
-      time: '09:00 AM',
-      worker: 'David Miller',
-      status: 'assigned',
-      amount: '$120',
-    },
-    {
-      id: 'T-1002',
-      bookingId: 'B-1002',
-      client: 'Sarah Johnson',
-      address: '456 Oak Ave, Somewhere',
-      service: 'Regular Cleaning',
-      date: '2025-05-14',
-      time: '01:00 PM',
-      worker: 'Lisa Chen',
-      status: 'in-progress',
-      amount: '$85',
-    },
-    {
-      id: 'T-1003',
-      bookingId: 'B-1003',
-      client: 'Michael Brown',
-      address: '789 Pine Rd, Elsewhere',
-      service: 'Window Cleaning',
-      date: '2025-05-13',
-      time: '10:30 AM',
-      worker: 'James Wilson',
-      status: 'completed',
-      amount: '$95',
-    },
-    {
-      id: 'T-1004',
-      bookingId: 'B-1004',
-      client: 'Emily Davis',
-      address: '101 Maple Dr, Nowhere',
-      service: 'Deep Cleaning',
-      date: '2025-05-13',
-      time: '02:00 PM',
-      worker: 'Maria Rodriguez',
-      status: 'completed',
-      amount: '$150',
-    },
-    {
-      id: 'T-1005',
-      bookingId: 'B-1005',
-      client: 'Robert Wilson',
-      address: '202 Cedar Ln, Anywhere',
-      service: 'Carpet Cleaning',
-      date: '2025-05-12',
-      time: '11:00 AM',
-      worker: 'Jennifer Lee',
-      status: 'completed',
-      amount: '$200',
-    },
-    {
-      id: 'T-1006',
-      bookingId: 'B-1006',
-      client: 'Jennifer Lee',
-      address: '303 Birch Blvd, Someplace',
-      service: 'Regular Cleaning',
-      date: '2025-05-15',
-      time: '09:30 AM',
-      worker: 'Unassigned',
-      status: 'unassigned',
-      amount: '$90',
-    },
-    {
-      id: 'T-1007',
-      bookingId: 'B-1007',
-      client: 'David Miller',
-      address: '404 Elm St, Othertown',
-      service: 'Move-out Cleaning',
-      date: '2025-05-16',
-      time: '10:00 AM',
-      worker: 'Unassigned',
-      status: 'unassigned',
-      amount: '$250',
-    },
-  ];
 
-  const workers = [
-    { id: 'W-1001', name: 'David Miller' },
-    { id: 'W-1002', name: 'Lisa Chen' },
-    { id: 'W-1003', name: 'James Wilson' },
-    { id: 'W-1004', name: 'Maria Rodriguez' },
-    { id: 'W-1005', name: 'Robert Johnson' },
-    { id: 'W-1006', name: 'Jennifer Lee' },
-  ];
+  const fetchTaskList = async(statusFilter)=>{
+  console.log('statusFilter: ', statusFilter);
+      let {payload} = await dispatch(TaskList(statusFilter))
+      settask( payload?.data?.data)
+  }
 
-  const filteredTasks = tasks.filter((task) => {
+  useEffect(()=>{
+    let taskLists = async()=>{
+      await fetchTaskList()
+    } 
+    taskLists()
+  },[statusFilter])
+  // const tasks = [
+  //   {
+  //     id: 'T-1001',
+  //     bookingId: 'B-1001',
+  //     client: 'John Smith',
+  //     address: '123 Main St, Anytown',
+  //     service: 'Deep Cleaning',
+  //     date: '2025-05-14',
+  //     time: '09:00 AM',
+  //     worker: 'David Miller',
+  //     status: 'assigned',
+  //     amount: '$120',
+  //   },
+  //   {
+  //     id: 'T-1002',
+  //     bookingId: 'B-1002',
+  //     client: 'Sarah Johnson',
+  //     address: '456 Oak Ave, Somewhere',
+  //     service: 'Regular Cleaning',
+  //     date: '2025-05-14',
+  //     time: '01:00 PM',
+  //     worker: 'Lisa Chen',
+  //     status: 'in-progress',
+  //     amount: '$85',
+  //   },
+  //   {
+  //     id: 'T-1003',
+  //     bookingId: 'B-1003',
+  //     client: 'Michael Brown',
+  //     address: '789 Pine Rd, Elsewhere',
+  //     service: 'Window Cleaning',
+  //     date: '2025-05-13',
+  //     time: '10:30 AM',
+  //     worker: 'James Wilson',
+  //     status: 'completed',
+  //     amount: '$95',
+  //   },
+  //   {
+  //     id: 'T-1004',
+  //     bookingId: 'B-1004',
+  //     client: 'Emily Davis',
+  //     address: '101 Maple Dr, Nowhere',
+  //     service: 'Deep Cleaning',
+  //     date: '2025-05-13',
+  //     time: '02:00 PM',
+  //     worker: 'Maria Rodriguez',
+  //     status: 'completed',
+  //     amount: '$150',
+  //   },
+  //   {
+  //     id: 'T-1005',
+  //     bookingId: 'B-1005',
+  //     client: 'Robert Wilson',
+  //     address: '202 Cedar Ln, Anywhere',
+  //     service: 'Carpet Cleaning',
+  //     date: '2025-05-12',
+  //     time: '11:00 AM',
+  //     worker: 'Jennifer Lee',
+  //     status: 'completed',
+  //     amount: '$200',
+  //   },
+  //   {
+  //     id: 'T-1006',
+  //     bookingId: 'B-1006',
+  //     client: 'Jennifer Lee',
+  //     address: '303 Birch Blvd, Someplace',
+  //     service: 'Regular Cleaning',
+  //     date: '2025-05-15',
+  //     time: '09:30 AM',
+  //     worker: 'Unassigned',
+  //     status: 'unassigned',
+  //     amount: '$90',
+  //   },
+  //   {
+  //     id: 'T-1007',
+  //     bookingId: 'B-1007',
+  //     client: 'David Miller',
+  //     address: '404 Elm St, Othertown',
+  //     service: 'Move-out Cleaning',
+  //     date: '2025-05-16',
+  //     time: '10:00 AM',
+  //     worker: 'Unassigned',
+  //     status: 'unassigned',
+  //     amount: '$250',
+  //   },
+  // ];
+
+
+  
+ 
+
+  const filteredTasks = tasks?.filter((task) => {
     const matchesSearch =
-      task.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      task.address.toLowerCase().includes(searchQuery.toLowerCase());
+      task.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task._id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      task.propertyAddress.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'all' || task.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   const handleViewTask = (task) => {
-    setSelectedTask(task);
-    setIsTaskDetailsOpen(true);
+  console.log('task: ', task);
+    // setSelectedTask(task);
+    // setIsTaskDetailsOpen(true);
   };
 
   const handleCompleteTask = (task) => {
@@ -162,14 +176,14 @@ const TasksList = () => {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: '_id',
       key: 'id',
       render: (text) => <span className="font-medium">{text}</span>,
     },
     {
       title: 'Client',
-      dataIndex: 'client',
-      key: 'client',
+      dataIndex: 'clientName',
+      key: 'clientName',
       render: (text, record) => (
         <div>
           <div>{text}</div>
@@ -188,18 +202,18 @@ const TasksList = () => {
     },
     {
       title: 'Date & Time',
-      key: 'dateTime',
+      key: 'serviceDate',
       responsive: ['md'],
       render: (record) => (
         <div>
           {record.date}
-          <div className="text-xs text-gray-500">{record.time}</div>
+          <div className="text-xs text-gray-900">{moment(record.serviceDate).format('YYYY-MM-DD')}</div>
         </div>
       ),
     },
     {
       title: 'Worker',
-      dataIndex: 'worker',
+      dataIndex: ['Worker', 0, 'name'],
       key: 'worker',
     },
     {
@@ -266,7 +280,6 @@ const TasksList = () => {
             className="w-full sm:w-[180px]"
           >
             <Option value="all">All Statuses</Option>
-            <Option value="unassigned">Unassigned</Option>
             <Option value="assigned">Assigned</Option>
             <Option value="in-progress">In Progress</Option>
             <Option value="completed">Completed</Option>
