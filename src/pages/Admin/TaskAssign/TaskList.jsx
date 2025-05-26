@@ -9,6 +9,7 @@ import {
   Space,
   Avatar,
   Checkbox,
+  notification,
 } from 'antd';
 import {
   SearchOutlined,
@@ -17,7 +18,7 @@ import {
 } from '@ant-design/icons';
 import { Badge } from '../../../components/badge';
 import { useDispatch } from 'react-redux';
-import { TaskList } from '../../../redux/slices/workerSlice';
+import { TaskList, ChangeTask } from '../../../redux/slices/workerSlice';
 import moment from 'moment';
 
 const { Option } = Select;
@@ -45,97 +46,8 @@ const TasksList = () => {
       await fetchTaskList()
     } 
     taskLists()
-  },[statusFilter])
-  // const tasks = [
-  //   {
-  //     id: 'T-1001',
-  //     bookingId: 'B-1001',
-  //     client: 'John Smith',
-  //     address: '123 Main St, Anytown',
-  //     service: 'Deep Cleaning',
-  //     date: '2025-05-14',
-  //     time: '09:00 AM',
-  //     worker: 'David Miller',
-  //     status: 'assigned',
-  //     amount: '$120',
-  //   },
-  //   {
-  //     id: 'T-1002',
-  //     bookingId: 'B-1002',
-  //     client: 'Sarah Johnson',
-  //     address: '456 Oak Ave, Somewhere',
-  //     service: 'Regular Cleaning',
-  //     date: '2025-05-14',
-  //     time: '01:00 PM',
-  //     worker: 'Lisa Chen',
-  //     status: 'in-progress',
-  //     amount: '$85',
-  //   },
-  //   {
-  //     id: 'T-1003',
-  //     bookingId: 'B-1003',
-  //     client: 'Michael Brown',
-  //     address: '789 Pine Rd, Elsewhere',
-  //     service: 'Window Cleaning',
-  //     date: '2025-05-13',
-  //     time: '10:30 AM',
-  //     worker: 'James Wilson',
-  //     status: 'completed',
-  //     amount: '$95',
-  //   },
-  //   {
-  //     id: 'T-1004',
-  //     bookingId: 'B-1004',
-  //     client: 'Emily Davis',
-  //     address: '101 Maple Dr, Nowhere',
-  //     service: 'Deep Cleaning',
-  //     date: '2025-05-13',
-  //     time: '02:00 PM',
-  //     worker: 'Maria Rodriguez',
-  //     status: 'completed',
-  //     amount: '$150',
-  //   },
-  //   {
-  //     id: 'T-1005',
-  //     bookingId: 'B-1005',
-  //     client: 'Robert Wilson',
-  //     address: '202 Cedar Ln, Anywhere',
-  //     service: 'Carpet Cleaning',
-  //     date: '2025-05-12',
-  //     time: '11:00 AM',
-  //     worker: 'Jennifer Lee',
-  //     status: 'completed',
-  //     amount: '$200',
-  //   },
-  //   {
-  //     id: 'T-1006',
-  //     bookingId: 'B-1006',
-  //     client: 'Jennifer Lee',
-  //     address: '303 Birch Blvd, Someplace',
-  //     service: 'Regular Cleaning',
-  //     date: '2025-05-15',
-  //     time: '09:30 AM',
-  //     worker: 'Unassigned',
-  //     status: 'unassigned',
-  //     amount: '$90',
-  //   },
-  //   {
-  //     id: 'T-1007',
-  //     bookingId: 'B-1007',
-  //     client: 'David Miller',
-  //     address: '404 Elm St, Othertown',
-  //     service: 'Move-out Cleaning',
-  //     date: '2025-05-16',
-  //     time: '10:00 AM',
-  //     worker: 'Unassigned',
-  //     status: 'unassigned',
-  //     amount: '$250',
-  //   },
-  // ];
-
-
+  },[statusFilter, isCompleteTaskOpen])
   
- 
 
   const filteredTasks = tasks?.filter((task) => {
     const matchesSearch =
@@ -152,7 +64,6 @@ const TasksList = () => {
   };
 
   const handleCompleteTask = (task) => {
-  console.log('task: >>>>>>', task);
     setSelectedTask(task);
     setIsCompleteTaskOpen(true);
   };
@@ -166,8 +77,20 @@ const TasksList = () => {
   };
 
   const handleMarkComplete = () => {
-    form.validateFields().then((values) => {
-      console.log('Completed Task:', values);
+    form.validateFields().then(async(values) => {
+      values = {...values, _id: selectedTask?._id, status: "completed"}
+      const {payload} = await dispatch(ChangeTask(values))
+      if(payload?.data?.status){
+        notification.success({
+          message: "Task Completed",
+          placement: "topRight"
+        })
+      }else{
+        notification.error({
+          message: "Try After Sometime!",
+          placement: "topRight"
+        })
+      }
       setIsCompleteTaskOpen(false);
       form.resetFields();
     });
@@ -330,7 +253,7 @@ const TasksList = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Service Type</h3>
-                  <p>{selectedTask.service}</p>
+                  <p>{selectedTask.service} cleaning</p>
                 </div>
                 <div>
                   <h3 className="font-medium">Amount</h3>

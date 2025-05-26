@@ -28,12 +28,23 @@ const TaskList = createAsyncThunk('worker/task-list', async()=>{
     return result;
 })
 
+const ChangeTask = createAsyncThunk('admin/change-task', async(data)=>{
+    const result = await axios.post(API.ChangeTask, data);
+    return result;
+})
+
+const TaskNotPending = createAsyncThunk('admin/task-not-pending', async()=>{
+    const result = await axios.post(API.TaskNotPending,{});
+    return result;
+})
+
 const worker = createSlice({
     name: 'worker',
     initialState: {
         workerData : [],
         taskList:[],
         allTaskList: [],
+        invoiceList: [],
         success: true,
         error: null
     },
@@ -58,8 +69,16 @@ const worker = createSlice({
             state.success = action.payload.success;
             state.error = action.payload.error
         })
+        builder.addCase(ChangeTask.fulfilled, (state,action)=>{
+            state.success = action.payload.success;
+            state.error = action.payload.error
+        })
+        builder.addCase(TaskNotPending.fulfilled,(state,action)=>{
+            state.invoiceList = action.payload.data;
+            state.success = action.payload.success;
+        })
     }
 });
 
-export {WorkerList, AddWorker, AssignTask, WorkerTaskList, TaskList}
+export {WorkerList, AddWorker, AssignTask, WorkerTaskList, TaskList, ChangeTask,TaskNotPending}
 export default worker.reducer;

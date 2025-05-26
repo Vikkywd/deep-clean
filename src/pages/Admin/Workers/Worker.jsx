@@ -48,9 +48,14 @@ const WorkersPage = () => {
   }, []);
 
   // Filter workers
-  const filteredWorkers = workers.filter(w =>
-    w.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  
+const filteredWorkers = workers
+.filter(w => w.name.toLowerCase().includes(searchQuery.toLowerCase()))
+.map(w => ({
+  ...w,
+  clean: w.specialties.map(s => `${s} cleaning`).join(', ')
+}));
+
 
   // Handle add worker
   const handleAddWorker = () => {
@@ -226,7 +231,7 @@ const WorkersPage = () => {
               <div className="text-sm space-y-1">
                 <div><strong>ID:</strong> {worker._id}</div>
                 <div><strong>Phone:</strong> {worker.phone}</div>
-                <div><strong>Specialties:</strong> {worker.specialties.join(', ')}</div>
+                <div><strong>Specialties:</strong> {worker.clean}</div>
                 <div><strong>Tasks Completed:</strong> {worker.tasks_completed}</div>
                 <div><strong>Joined:</strong> {worker.joined}</div>
                 <div className="flex items-center"><strong>Rating:</strong><Rate disabled allowHalf value={worker.rating} className="ml-1" /></div>

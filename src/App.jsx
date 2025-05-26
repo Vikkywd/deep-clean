@@ -14,6 +14,7 @@ import Invoice from './pages/Admin/Invoices/Invoice'
 import ReportsPage from './pages/Admin/Reports/Reports'
 import SettingsPage from './pages/Admin/Settings/Setting'
 import PrivateRoute from './components/PrivateRoutes'
+import Payment from './components/payment'
 
 function App() {
   const token = localStorage.getItem('token');
@@ -24,6 +25,7 @@ function App() {
         <Route path='/' element={<LandingPage />} />
 
           <Route path='/login' element={token ? <Navigate to='/dashboard' replace/>: <Login />} />
+          <Route path='/payment/:orderId' element={<Payment/>} />
           
           <Route element={<PrivateRoute />}>
           <Route path='/dashboard' element={<Dashboard children={<DashboardPage/>}/>}/>

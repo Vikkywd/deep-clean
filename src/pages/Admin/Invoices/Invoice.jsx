@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
-import { Table, Input, Button, Select, Modal, Space } from 'antd';
-import { SearchOutlined, FilterOutlined, DownloadOutlined, PrinterOutlined, EyeOutlined } from '@ant-design/icons';
-import { Badge } from '../../../components/badge'; 
+import React, { useEffect, useState } from 'react';
+import { Table, Input, Button, Select, Modal, Space, notification } from 'antd';
+import { SearchOutlined, FilterOutlined, DownloadOutlined, PrinterOutlined, EyeOutlined, LinkOutlined } from '@ant-design/icons';
+import { Badge } from '../../../components/badge';
+import { useDispatch } from 'react-redux';
+import { TaskNotPending } from '../../../redux/slices/workerSlice';
 
 const { Option } = Select;
 
 const Invoice = () => {
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [isInvoiceDetailsOpen, setIsInvoiceDetailsOpen] = useState(false);
-
-  const invoices = [
+  // const [invoices, setInvoices] = useState([])
+   const invoices = [
     {
       id: 'INV-1001',
       client: 'John Smith',
@@ -19,7 +22,7 @@ const Invoice = () => {
       taskId: 'T-1003',
       service: 'Window Cleaning',
       date: '2025-05-13',
-      amount: '$95',
+      amount: '95',
       status: 'paid',
       paymentMethod: 'Credit Card',
     },
@@ -41,7 +44,7 @@ const Invoice = () => {
       taskId: 'T-1005',
       service: 'Carpet Cleaning',
       date: '2025-05-12',
-      amount: '$200',
+      amount: '200',
       status: 'paid',
       paymentMethod: 'Bank Transfer',
     },
@@ -52,7 +55,7 @@ const Invoice = () => {
       taskId: 'T-1002',
       service: 'Regular Cleaning',
       date: '2025-05-14',
-      amount: '$85',
+      amount: '85',
       status: 'pending',
       paymentMethod: 'Online Payment',
     },
@@ -63,11 +66,22 @@ const Invoice = () => {
       taskId: 'T-1008',
       service: 'Move-out Cleaning',
       date: '2025-05-10',
-      amount: '$250',
+      amount: '250',
       status: 'overdue',
       paymentMethod: 'Credit Card',
     },
   ];
+
+  let getInvoice = async()=>{
+    let {payload} = await dispatch(TaskNotPending());
+    console.log('payload: +++', payload?.data?.data);
+
+  }
+
+  useEffect(()=>{
+    getInvoice()
+  },[])
+
 
   const filteredInvoices = invoices.filter((invoice) => {
     const matchesSearch =
@@ -83,6 +97,39 @@ const Invoice = () => {
     setSelectedInvoice(invoice);
     setIsInvoiceDetailsOpen(true);
   };
+
+  const paymentLink = (invoice)=>{
+    const url = `http://localhost:5173/payment/${invoice.id}`;
+    
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(() => {
+      console.log('url: ', url);
+      notification.success({
+        message: "Payment link copied to clipboard!",
+        placement: 'topRight'
+      })
+        // message.success('Payment link copied to clipboard!');
+      }).catch((err) => {
+      console.log('err: ', err);
+        notification.error({
+          message: "Failed!",
+          placement: 'topRight'
+        })      
+      });
+    } else {
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        message.success('Payment link copied to clipboard!');
+      } catch (err) {
+        message.error('Failed to copy the link.');
+      }
+      document.body.removeChild(textArea);
+    }
+  }
 
   const columns = [
     {
@@ -146,6 +193,7 @@ const Invoice = () => {
           />
           <Button type="text" icon={<DownloadOutlined />} aria-label="Download" />
           <Button type="text" icon={<PrinterOutlined />} aria-label="Print" />
+          <Button onClick={()=>paymentLink(record)} type="text" icon={<LinkOutlined  />} aria-label="Payment Link" />
         </Space>
       ),
     },
@@ -194,57 +242,65 @@ const Invoice = () => {
 
       {/* Invoice Details Modal */}
       <Modal
-        title="Invoice Details"
+        title={null}
         open={isInvoiceDetailsOpen}
         onCancel={() => setIsInvoiceDetailsOpen(false)}
         footer={null}
-        width={700}
+        width={760}
       >
         {selectedInvoice && (
-          <div className="space-y-6">
-            <div className="flex justify-between">
+          <div className="space-y-8 p-4 text-gray-800 dark:text-gray-100">
+            {/* Header */}
+            <div className="flex justify-between border-b pb-6">
               <div>
-                <h3 className="text-xl font-bold">CleanPro Services</h3>
-                <p className="text-gray-500">123 Cleaning Street, Suite 100</p>
-                <p className="text-gray-500">Sparkle City, SC 12345</p>
-                <p className="text-gray-500">contact@cleanpro.example.com</p>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">CleanPro Services</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400">123 Cleaning Street, Suite 100</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Sparkle City, SC 12345</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">contact@cleanpro.example.com</p>
               </div>
               <div className="text-right">
-                <h3 className="text-xl font-bold">INVOICE</h3>
-                <p className="font-medium">{selectedInvoice.id}</p>
-                <p className="text-gray-500">Date: {selectedInvoice.date}</p>
-                <Badge
-                  variant={
-                    selectedInvoice.status === 'paid'
-                      ? 'success'
-                      : selectedInvoice.status === 'pending'
-                        ? 'outline'
-                        : 'destructive'
-                  }
-                >
-                  {selectedInvoice.status}
-                </Badge>
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">INVOICE</h3>
+                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">#{selectedInvoice.id}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Date: {selectedInvoice.date}</p>
+                <div className="mt-2">
+                  <Badge
+                    variant={
+                      selectedInvoice.status === 'paid'
+                        ? 'success'
+                        : selectedInvoice.status === 'pending'
+                          ? 'outline'
+                          : 'destructive'
+                    }
+                    className="capitalize"
+                  >
+                    {selectedInvoice.status}
+                  </Badge>
+                </div>
               </div>
             </div>
 
-            <div className="border-t pt-4">
-              <h4 className="font-medium">Bill To:</h4>
-              <p>{selectedInvoice.client}</p>
-              <p>{selectedInvoice.email}</p>
+            {/* Bill To - Enhanced Dark Look */}
+            <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-md">
+              <h4 className="text-base font-semibold text-gray-700 dark:text-gray-100 mb-2">Bill To</h4>
+              <p className="text-sm text-gray-800 dark:text-gray-200">{selectedInvoice.client}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">{selectedInvoice.email}</p>
             </div>
 
+            {/* Items Table */}
             <Table
+              className="text-sm"
               columns={[
                 {
-                  title: 'Description',
+                  title: <span className="text-gray-600 dark:text-gray-300 font-medium">Description</span>,
                   dataIndex: 'description',
                   key: 'description',
                 },
                 {
-                  title: 'Amount',
+                  title: <span className="text-gray-600 dark:text-gray-300 font-medium">Amount</span>,
                   dataIndex: 'amount',
                   key: 'amount',
                   align: 'right',
+                  render: (amount) => <span className="text-gray-800 dark:text-gray-200">${amount}</span>,
                 },
               ]}
               dataSource={[
@@ -255,20 +311,21 @@ const Invoice = () => {
                 },
                 {
                   key: 'total',
-                  description: 'Total',
-                  amount: <strong>{selectedInvoice.amount}</strong>,
+                  description: <strong>Total</strong>,
+                  amount: <strong className="text-gray-900 dark:text-white">{selectedInvoice.amount}</strong>,
                 },
               ]}
               pagination={false}
               bordered
             />
 
-            <div className="space-y-2">
-              <h4 className="font-medium">Payment Information:</h4>
-              <p>
+            {/* Payment Info */}
+            <div className="border-b pb-4">
+              <h4 className="text-base font-semibold text-gray-700 dark:text-gray-100 mb-1">Payment Information:</h4>
+              <p className="text-sm">
                 <span className="font-medium">Method:</span> {selectedInvoice.paymentMethod}
               </p>
-              <p>
+              <p className="text-sm">
                 <span className="font-medium">Status:</span>{' '}
                 {selectedInvoice.status === 'paid'
                   ? 'Paid in full'
@@ -278,21 +335,22 @@ const Invoice = () => {
               </p>
             </div>
 
-            <div className="border-t pt-4 text-center text-sm text-gray-500">
+            {/* Footer Note */}
+            <div className="text-center text-xs text-gray-500 dark:text-gray-400 pt-4 border-t">
               <p>Thank you for your business!</p>
-              <p>If you have any questions, please contact us at support@cleanpro.example.com</p>
+              <p>
+                Questions? Contact us at{' '}
+                <a href="mailto:support@cleanpro.example.com" className="underline text-blue-600 dark:text-blue-400">
+                  support@cleanpro.example.com
+                </a>
+              </p>
             </div>
 
-            <div className="flex justify-between">
+            {/* Action Buttons */}
+            <div className="flex justify-between pt-6">
               <Space>
-                <Button type="default">
-                  <DownloadOutlined className="mr-2" />
-                  Download
-                </Button>
-                <Button type="default">
-                  <PrinterOutlined className="mr-2" />
-                  Print
-                </Button>
+                <Button icon={<DownloadOutlined />}>Download</Button>
+                <Button icon={<PrinterOutlined />}>Print</Button>
               </Space>
               <Button type="primary" onClick={() => setIsInvoiceDetailsOpen(false)}>
                 Close
@@ -301,6 +359,9 @@ const Invoice = () => {
           </div>
         )}
       </Modal>
+
+
+
     </div>
   );
 };

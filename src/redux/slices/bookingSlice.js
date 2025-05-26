@@ -13,6 +13,8 @@ const AllBooking = createAsyncThunk('admin/all-booking', async(data)=>{
         return result
 })
 
+
+
 const bookingSlice = createSlice({
     name: 'booking',
     initialState: {
@@ -30,6 +32,7 @@ const bookingSlice = createSlice({
                     state.allBookings = action.payload.data.data;
                     state.success = action.payload.success
                 })
+               
     }
 })
 
