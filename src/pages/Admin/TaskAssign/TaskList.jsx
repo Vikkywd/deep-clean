@@ -147,12 +147,12 @@ const TasksList = () => {
   });
 
   const handleViewTask = (task) => {
-  console.log('task: ', task);
-    // setSelectedTask(task);
-    // setIsTaskDetailsOpen(true);
+    setSelectedTask(task);
+    setIsTaskDetailsOpen(true);
   };
 
   const handleCompleteTask = (task) => {
+  console.log('task: >>>>>>', task);
     setSelectedTask(task);
     setIsCompleteTaskOpen(true);
   };
@@ -312,20 +312,20 @@ const TasksList = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Task ID</h3>
-                  <p>{selectedTask.id}</p>
+                  <p>{selectedTask._id}</p>
                 </div>
                 <div>
                   <h3 className="font-medium">Booking ID</h3>
-                  <p>{selectedTask.bookingId}</p>
+                  <p>{selectedTask._id}</p>
                 </div>
               </div>
               <div>
                 <h3 className="font-medium">Client</h3>
-                <p>{selectedTask.client}</p>
+                <p>{selectedTask.clientName}</p>
               </div>
               <div>
                 <h3 className="font-medium">Service Address</h3>
-                <p>{selectedTask.address}</p>
+                <p>{selectedTask.propertyAddress}</p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -340,17 +340,17 @@ const TasksList = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Date</h3>
-                  <p>{selectedTask.date}</p>
+                  <p>{moment(selectedTask.serviceDate).format('YYYY-MM-DD')}</p>
                 </div>
                 <div>
                   <h3 className="font-medium">Time</h3>
-                  <p>{selectedTask.time}</p>
+                  <p>{selectedTask.serviceTime}</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Worker</h3>
-                  <p>{selectedTask.worker}</p>
+                  <p>{selectedTask.Worker[0].name}</p>
                 </div>
                 <div>
                   <h3 className="font-medium">Status</h3>
@@ -410,24 +410,24 @@ const TasksList = () => {
             <div className="grid gap-4">
               <div className="flex items-center space-x-4">
                 <Avatar src="/placeholder-user.jpg">
-                  {selectedTask.worker
+                  {selectedTask.worker  ? selectedTask.Worker
                     .split(' ')
                     .map((n) => n[0])
-                    .join('')}
+                    .join('') : ''}
                 </Avatar>
                 <div>
-                  <p className="font-medium">{selectedTask.worker}</p>
+                  <p className="font-medium">{selectedTask.Worker[0].name}</p>
                   <p className="text-sm text-gray-500">Worker assigned to this task</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <h3 className="font-medium">Task ID</h3>
-                  <p>{selectedTask.id}</p>
+                  <p>{selectedTask._id}</p>
                 </div>
                 <div>
                   <h3 className="font-medium">Client</h3>
-                  <p>{selectedTask.client}</p>
+                  <p>{selectedTask.clientName}</p>
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
