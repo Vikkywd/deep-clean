@@ -1,9 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Table, Input, Button, Select, Modal, Space, notification } from 'antd';
 import { SearchOutlined, FilterOutlined, DownloadOutlined, PrinterOutlined, EyeOutlined, LinkOutlined } from '@ant-design/icons';
 import { Badge } from '../../../components/badge';
 import { useDispatch } from 'react-redux';
 import { TaskNotPending } from '../../../redux/slices/workerSlice';
+import moment from 'moment';
+import { useReactToPrint } from 'react-to-print';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const { Option } = Select;
 
@@ -13,80 +17,23 @@ const Invoice = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [isInvoiceDetailsOpen, setIsInvoiceDetailsOpen] = useState(false);
-  // const [invoices, setInvoices] = useState([])
-   const invoices = [
-    {
-      id: 'INV-1001',
-      client: 'John Smith',
-      email: 'john.smith@example.com',
-      taskId: 'T-1003',
-      service: 'Window Cleaning',
-      date: '2025-05-13',
-      amount: '95',
-      status: 'paid',
-      paymentMethod: 'Credit Card',
-    },
-    {
-      id: 'INV-1002',
-      client: 'Emily Davis',
-      email: 'emily.davis@example.com',
-      taskId: 'T-1004',
-      service: 'Deep Cleaning',
-      date: '2025-05-13',
-      amount: '$150',
-      status: 'paid',
-      paymentMethod: 'Cash',
-    },
-    {
-      id: 'INV-1003',
-      client: 'Robert Wilson',
-      email: 'robert.wilson@example.com',
-      taskId: 'T-1005',
-      service: 'Carpet Cleaning',
-      date: '2025-05-12',
-      amount: '200',
-      status: 'paid',
-      paymentMethod: 'Bank Transfer',
-    },
-    {
-      id: 'INV-1004',
-      client: 'Sarah Johnson',
-      email: 'sarah.johnson@example.com',
-      taskId: 'T-1002',
-      service: 'Regular Cleaning',
-      date: '2025-05-14',
-      amount: '85',
-      status: 'pending',
-      paymentMethod: 'Online Payment',
-    },
-    {
-      id: 'INV-1005',
-      client: 'Michael Brown',
-      email: 'michael.brown@example.com',
-      taskId: 'T-1008',
-      service: 'Move-out Cleaning',
-      date: '2025-05-10',
-      amount: '250',
-      status: 'overdue',
-      paymentMethod: 'Credit Card',
-    },
-  ];
+  const [invoices, setInvoices] = useState([]);
+  const printRef = useRef();
+  const buttonsRef = useRef();
 
-  let getInvoice = async()=>{
-    let {payload} = await dispatch(TaskNotPending());
-    console.log('payload: +++', payload?.data?.data);
 
-  }
-
-  useEffect(()=>{
-    getInvoice()
-  },[])
-
+  useEffect(() => {
+    const fetchInvoices = async () => {
+      const { payload } = await dispatch(TaskNotPending());
+      setInvoices(payload?.data?.data || []);
+    };
+    fetchInvoices();
+  }, [dispatch]);
 
   const filteredInvoices = invoices.filter((invoice) => {
     const matchesSearch =
-      invoice.client.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      invoice.id.toLowerCase().includes(searchQuery.toLowerCase());
+      invoice.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      invoice._id.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesStatus = statusFilter === 'all' || invoice.status === statusFilter;
 
@@ -98,57 +45,67 @@ const Invoice = () => {
     setIsInvoiceDetailsOpen(true);
   };
 
-  const paymentLink = (invoice)=>{
+
+  const handleDownload = () => {
+    if (!printRef.current || !buttonsRef.current) return;
+
+    buttonsRef.current.style.display = 'none';  // Hide buttons
+
+    html2canvas(printRef.current, {
+      scale: 3,                // Increase scale for higher quality image
+      useCORS: true,           // In case of external images
+      scrollY: -window.scrollY // Avoid scroll offset issues
+    }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format:[650, 760],
+      });
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Invoice_${selectedInvoice?._id}.pdf`);
+
+      buttonsRef.current.style.display = 'flex'; // Show buttons back
+    }).catch(() => {
+      buttonsRef.current.style.display = 'flex'; // Show buttons if error
+    });
+  };
+
+
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: `Invoice_${selectedInvoice?._id}`,
+  });
+
+  const paymentLink = (invoice) => {
     const url = `http://localhost:5173/payment/${invoice.id}`;
-    
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(url).then(() => {
-      console.log('url: ', url);
+    navigator.clipboard.writeText(url).then(() => {
       notification.success({
         message: "Payment link copied to clipboard!",
         placement: 'topRight'
-      })
-        // message.success('Payment link copied to clipboard!');
-      }).catch((err) => {
-      console.log('err: ', err);
-        notification.error({
-          message: "Failed!",
-          placement: 'topRight'
-        })      
       });
-    } else {
-      const textArea = document.createElement('textarea');
-      textArea.value = url;
-      document.body.appendChild(textArea);
-      textArea.select();
-      try {
-        document.execCommand('copy');
-        message.success('Payment link copied to clipboard!');
-      } catch (err) {
-        message.error('Failed to copy the link.');
-      }
-      document.body.removeChild(textArea);
-    }
-  }
+    }).catch(() => {
+      notification.error({
+        message: "Failed to copy the link!",
+        placement: 'topRight'
+      });
+    });
+  };
 
   const columns = [
     {
       title: 'Invoice ID',
-      dataIndex: 'id',
-      key: 'id',
-      render: (text) => <span className="font-medium">{text}</span>,
+      dataIndex: '_id',
+      key: '_id',
     },
     {
       title: 'Client',
-      dataIndex: 'client',
-      key: 'client',
-      render: (text, record) => (
-        <div>
-          <div>{text}</div>
-          <div className="text-xs text-gray-500 md:hidden">{record.service}</div>
-          <div className="text-xs text-gray-500 md:hidden">{record.date}</div>
-        </div>
-      ),
+      dataIndex: 'clientName',
+      key: 'clientName',
     },
     {
       title: 'Service',
@@ -158,9 +115,10 @@ const Invoice = () => {
     },
     {
       title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
+      dataIndex: 'serviceDate',
+      key: 'serviceDate',
       responsive: ['md'],
+      render: (text) => moment(text).format('YYYY-MM-DD'),
     },
     {
       title: 'Amount',
@@ -169,12 +127,13 @@ const Invoice = () => {
     },
     {
       title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      dataIndex: 'paymentStatus',
+      key: 'paymentStatus',
       render: (status) => (
-        <Badge
-          variant={status === 'paid' ? 'success' : status === 'pending' ? 'outline' : 'destructive'}
-        >
+        <Badge variant={
+          status === 'paid' ? 'success' :
+            status === 'pending' ? 'outline' : 'destructive'
+        }>
           {status}
         </Badge>
       ),
@@ -185,15 +144,9 @@ const Invoice = () => {
       align: 'right',
       render: (record) => (
         <Space>
-          <Button
-            type="text"
-            icon={<EyeOutlined />}
-            onClick={() => handleViewInvoice(record)}
-            aria-label="View"
-          />
-          <Button type="text" icon={<DownloadOutlined />} aria-label="Download" />
-          <Button type="text" icon={<PrinterOutlined />} aria-label="Print" />
-          <Button onClick={()=>paymentLink(record)} type="text" icon={<LinkOutlined  />} aria-label="Payment Link" />
+          <Button type="text" icon={<EyeOutlined />} onClick={() => handleViewInvoice(record)} />
+          <Button type="text" icon={<DownloadOutlined />} onClick={handleDownload} />
+          <Button type="text" icon={<LinkOutlined />} onClick={() => paymentLink(record)} />
         </Space>
       ),
     },
@@ -202,7 +155,7 @@ const Invoice = () => {
   return (
     <div className="space-y-6 p-4">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">Invoices</h2>
+        <h2 className="text-2xl font-bold">Invoices</h2>
         <p className="text-gray-500">Manage and track client invoices and payments</p>
       </div>
 
@@ -220,7 +173,7 @@ const Invoice = () => {
           <FilterOutlined className="text-gray-400" />
           <Select
             value={statusFilter}
-            onChange={(value) => setStatusFilter(value)}
+            onChange={setStatusFilter}
             className="w-[180px]"
           >
             <Option value="all">All Statuses</Option>
@@ -234,85 +187,90 @@ const Invoice = () => {
       <Table
         columns={columns}
         dataSource={filteredInvoices}
-        rowKey="id"
+        rowKey="_id"
         pagination={false}
         bordered
         className="rounded-md"
       />
 
-      {/* Invoice Details Modal */}
       <Modal
         title={null}
         open={isInvoiceDetailsOpen}
         onCancel={() => setIsInvoiceDetailsOpen(false)}
         footer={null}
         width={760}
+        destroyOnClose
       >
         {selectedInvoice && (
-          <div className="space-y-8 p-4 text-gray-800 dark:text-gray-100">
-            {/* Header */}
+          <div ref={printRef} className="space-y-8 p-4 text-gray-800 dark:text-gray-100">
+            {/* Invoice Header */}
             <div className="flex justify-between border-b pb-6">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">CleanPro Services</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">123 Cleaning Street, Suite 100</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Sparkle City, SC 12345</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">contact@cleanpro.example.com</p>
+                <h3 className="text-2xl font-bold">CleanPro Services</h3>
+                <p className="text-sm text-gray-500">123 Cleaning Street</p>
+                <p className="text-sm text-gray-500">Sparkle City, SC</p>
+                <p className="text-sm text-gray-500">contact@cleanpro.example.com</p>
               </div>
               <div className="text-right">
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">INVOICE</h3>
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-300">#{selectedInvoice.id}</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Date: {selectedInvoice.date}</p>
+                <h3 className="text-xl font-semibold">INVOICE</h3>
+                <p className="text-sm font-medium">#{selectedInvoice._id}</p>
+                <p className="text-sm text-gray-500">Date: {moment(selectedInvoice.serviceDate).format('YYYY-MM-DD')}</p>
                 <div className="mt-2">
-                  <Badge
-                    variant={
-                      selectedInvoice.status === 'paid'
-                        ? 'success'
-                        : selectedInvoice.status === 'pending'
-                          ? 'outline'
-                          : 'destructive'
-                    }
-                    className="capitalize"
-                  >
-                    {selectedInvoice.status}
+                  <Badge variant={
+                    selectedInvoice.status === 'paid' ? 'success' :
+                      selectedInvoice.status === 'pending' ? 'outline' : 'destructive'
+                  }>
+                    <span style={{
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      fontWeight: '600',
+                    }}>
+                      {selectedInvoice.paymentStatus}
+                    </span>
                   </Badge>
                 </div>
               </div>
             </div>
 
-            {/* Bill To - Enhanced Dark Look */}
+            {/* Billing Info */}
             <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-md">
-              <h4 className="text-base font-semibold text-gray-700 dark:text-gray-100 mb-2">Bill To</h4>
-              <p className="text-sm text-gray-800 dark:text-gray-200">{selectedInvoice.client}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{selectedInvoice.email}</p>
+              <h4 className="font-semibold mb-2">Bill To</h4>
+              <p>{selectedInvoice.clientName}</p>
+              <p>{selectedInvoice.phone}</p>
             </div>
 
-            {/* Items Table */}
+            {/* Service Items */}
+
             <Table
-              className="text-sm"
               columns={[
                 {
-                  title: <span className="text-gray-600 dark:text-gray-300 font-medium">Description</span>,
+                  title: 'Description',
                   dataIndex: 'description',
                   key: 'description',
                 },
                 {
-                  title: <span className="text-gray-600 dark:text-gray-300 font-medium">Amount</span>,
+                  title: 'Amount',
                   dataIndex: 'amount',
                   key: 'amount',
                   align: 'right',
-                  render: (amount) => <span className="text-gray-800 dark:text-gray-200">${amount}</span>,
-                },
+                  render: (val, record) => {
+                    if (record.description === 'Total') {
+                      return <strong>{val}</strong>;  // Bold only the total row
+                    }
+                    return `$${val}`;  // Normal rendering for others
+                  },
+                }
               ]}
               dataSource={[
                 {
-                  key: 'service',
-                  description: `${selectedInvoice.service} (Task ID: ${selectedInvoice.taskId})`,
+                  key: '1',
+                  description: `${selectedInvoice.service.map(e => `${e} cleaning`).join(', ')}`,
                   amount: selectedInvoice.amount,
                 },
                 {
-                  key: 'total',
+                  key: '2',
                   description: <strong>Total</strong>,
-                  amount: <strong className="text-gray-900 dark:text-white">{selectedInvoice.amount}</strong>,
+                  amount: selectedInvoice.amount,
                 },
               ]}
               pagination={false}
@@ -321,36 +279,27 @@ const Invoice = () => {
 
             {/* Payment Info */}
             <div className="border-b pb-4">
-              <h4 className="text-base font-semibold text-gray-700 dark:text-gray-100 mb-1">Payment Information:</h4>
-              <p className="text-sm">
-                <span className="font-medium">Method:</span> {selectedInvoice.paymentMethod}
-              </p>
-              <p className="text-sm">
-                <span className="font-medium">Status:</span>{' '}
-                {selectedInvoice.status === 'paid'
-                  ? 'Paid in full'
-                  : selectedInvoice.status === 'pending'
-                    ? 'Payment pending'
-                    : 'Payment overdue'}
-              </p>
+              <h4 className="font-semibold">Payment Information</h4>
+              <p><strong>Method:</strong> {selectedInvoice.paymentMethod}</p>
+              <p><strong>Status:</strong> {
+                selectedInvoice.status === 'paid' ? 'Paid in full' :
+                  selectedInvoice.status === 'pending' ? 'Payment pending' : 'Overdue'
+              }</p>
             </div>
 
             {/* Footer Note */}
-            <div className="text-center text-xs text-gray-500 dark:text-gray-400 pt-4 border-t">
+            <div className="text-center text-xs text-gray-500 pt-4 border-t">
               <p>Thank you for your business!</p>
               <p>
-                Questions? Contact us at{' '}
-                <a href="mailto:support@cleanpro.example.com" className="underline text-blue-600 dark:text-blue-400">
-                  support@cleanpro.example.com
-                </a>
+                Questions? Contact us at <a href="mailto:support@cleanpro.example.com" className="underline text-blue-600">support@cleanpro.example.com</a>
               </p>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex justify-between pt-6">
+            {/* Modal Footer Actions */}
+            <div ref={buttonsRef} className="flex justify-between pt-6">
               <Space>
-                <Button icon={<DownloadOutlined />}>Download</Button>
-                <Button icon={<PrinterOutlined />}>Print</Button>
+                <Button onClick={handleDownload} icon={<DownloadOutlined />}>Download</Button>
+                <Button onClick={() => setTimeout(() => { handlePrint() }, 1000)} icon={<PrinterOutlined />}>Print</Button>
               </Space>
               <Button type="primary" onClick={() => setIsInvoiceDetailsOpen(false)}>
                 Close
@@ -359,9 +308,6 @@ const Invoice = () => {
           </div>
         )}
       </Modal>
-
-
-
     </div>
   );
 };
