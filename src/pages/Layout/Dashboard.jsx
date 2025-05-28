@@ -37,7 +37,7 @@ const Dashboard = ({ children }) => {
     },
     {
       key: 'invoices',
-      label: 'Payments',
+      label: 'Bills',
       icon: <FileTextOutlined />,
       path: '/dashboard/invoices',
     },

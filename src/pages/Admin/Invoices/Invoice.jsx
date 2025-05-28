@@ -82,7 +82,7 @@ const Invoice = () => {
   });
 
   const paymentLink = (invoice) => {
-    const url = `http://localhost:5173/payment/${invoice.id}`;
+    const url = `http://localhost:5173/payment/${invoice._id}`;
     navigator.clipboard.writeText(url).then(() => {
       notification.success({
         message: "Payment link copied to clipboard!",
@@ -112,6 +112,7 @@ const Invoice = () => {
       dataIndex: 'service',
       key: 'service',
       responsive: ['md'],
+      render:(text,record)=>text.map(t=>t + ' cleaning')
     },
     {
       title: 'Date',
@@ -124,6 +125,7 @@ const Invoice = () => {
       title: 'Amount',
       dataIndex: 'amount',
       key: 'amount',
+      render: (text)=> `$ ${text}`
     },
     {
       title: 'Status',
@@ -145,7 +147,7 @@ const Invoice = () => {
       render: (record) => (
         <Space>
           <Button type="text" icon={<EyeOutlined />} onClick={() => handleViewInvoice(record)} />
-          <Button type="text" icon={<DownloadOutlined />} onClick={handleDownload} />
+          {/* <Button type="text" icon={<DownloadOutlined />} onClick={handleDownload} /> */}
           <Button type="text" icon={<LinkOutlined />} onClick={() => paymentLink(record)} />
         </Space>
       ),

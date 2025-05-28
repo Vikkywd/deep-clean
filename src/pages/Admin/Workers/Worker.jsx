@@ -35,7 +35,6 @@ const WorkersPage = () => {
   // // Fetch bookings
   const getBookingList = async () => {
     const { payload } = await dispatch(AllBooking());
-    // filter only active bookings
     const all = payload?.data?.data || [];
     setBookings(all.filter(b => b.status === 'assigned' || b.status === 'pending'));
   };
@@ -88,6 +87,7 @@ const filteredWorkers = workers
   const handleAssignTask = () => {
     assignForm.validateFields().then(async values => {
       const payload = {
+        workerEmail: selectedWorker.email,
         workerId: selectedWorker._id,
         bookingId: values.bookingId,
         status: "assigned"
@@ -173,7 +173,7 @@ const filteredWorkers = workers
         <Form form={assignForm} layout="vertical" onFinish={handleAssignTask}>
           <Form.Item name="bookingId" label="Select Booking" rules={[{ required: true }]}>
             <Select placeholder="Choose a booking">
-              {bookings.map(b => (
+              {bookings?.map(b => (
                 <Option key={b._id} value={b._id}>
                   {b.clientName}&nbsp;(
                   {moment(b.serviceDate).format('DD-MM-YYYY')} – {b.serviceTime}
@@ -207,43 +207,47 @@ const filteredWorkers = workers
       </div>
 
       {/* Workers Grid */}
+      {bookings ?
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredWorkers.map(worker => (
-          <Card
-            key={worker._id}
-            className="shadow-md hover:shadow-lg transition-shadow"
-            title={
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <Avatar>{worker.name.charAt(0)}</Avatar>
-                  <div>
-                    <div className="text-base font-semibold">{worker.name}</div>
-                    <div className="text-sm text-gray-500">{worker.email}</div>
-                  </div>
+      {filteredWorkers.map(worker => (
+        <Card
+          key={worker._id}
+          className="shadow-md hover:shadow-lg transition-shadow"
+          title={
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Avatar>{worker.name.charAt(0)}</Avatar>
+                <div>
+                  <div className="text-base font-semibold">{worker.name}</div>
+                  <div className="text-sm text-gray-500">{worker.email}</div>
                 </div>
-                <Badge variant={worker.status === 'active' ? 'success' : 'secondary'}>
-                  {worker.status}
-                </Badge>
               </div>
-            }
-          >
-            <div className="p-4">
-              <div className="text-sm space-y-1">
-                <div><strong>ID:</strong> {worker._id}</div>
-                <div><strong>Phone:</strong> {worker.phone}</div>
-                <div><strong>Specialties:</strong> {worker.clean}</div>
-                <div><strong>Tasks Completed:</strong> {worker.tasks_completed}</div>
-                <div><strong>Joined:</strong> {worker.joined}</div>
-                <div className="flex items-center"><strong>Rating:</strong><Rate disabled allowHalf value={worker.rating} className="ml-1" /></div>
-              </div>
+              <Badge variant={worker.status === 'active' ? 'success' : 'secondary'}>
+                {worker.status}
+              </Badge>
             </div>
-            <div className="flex justify-between p-4 pt-0">
-              <Button onClick={() => openAssignModal(worker)}>Assign Task</Button>
-              <Button type="default">View Details</Button>
+          }
+        >
+          <div className="p-4">
+            <div className="text-sm space-y-1">
+              <div><strong>ID:</strong> {worker._id}</div>
+              <div><strong>Phone:</strong> {worker.phone}</div>
+              <div><strong>Specialties:</strong> {worker.clean}</div>
+              <div><strong>Tasks Completed:</strong> {worker.tasks_completed}</div>
+              <div><strong>Joined:</strong> {worker.joined}</div>
+              <div className="flex items-center"><strong>Rating:</strong><Rate disabled allowHalf value={worker.rating} className="ml-1" /></div>
             </div>
-          </Card>
-        ))}
-      </div>
+          </div>
+          <div className="flex justify-between p-4 pt-0">
+            <Button onClick={() => openAssignModal(worker)}>Assign Task</Button>
+            <Button type="default">View Details</Button>
+          </div>
+        </Card>
+      ))}
+    </div> :
+    <div>Loading...</div>
+    }
+      
     </div>
   );
 };
