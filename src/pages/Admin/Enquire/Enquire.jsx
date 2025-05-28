@@ -107,8 +107,8 @@ function Enquire() {
   const getEnquireList = async()=>{
     const {payload} = await dispatch(EnquireList())
     setData(payload?.data?.data);
-
   }
+  
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
