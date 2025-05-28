@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Typography, Input } from 'antd';
-import { Link, useLocation } from 'react-router-dom';
-const { Title } = Typography;
+import { Table, Input } from 'antd';
+import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { EnquireList, DeleteEnquire } from '../../../redux/slices/enquireSlice'; 
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
@@ -108,7 +107,7 @@ function Enquire() {
     const {payload} = await dispatch(EnquireList())
     setData(payload?.data?.data);
   }
-  
+
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
