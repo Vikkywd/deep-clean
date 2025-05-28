@@ -12,6 +12,7 @@ const { Option } = Select;
 const WorkersPage = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
   const [isNewWorkerOpen, setIsNewWorkerOpen] = useState(false);
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [selectedWorker, setSelectedWorker] = useState(null);
@@ -37,6 +38,7 @@ const WorkersPage = () => {
     const { payload } = await dispatch(AllBooking());
     const all = payload?.data?.data || [];
     setBookings(all.filter(b => b.status === 'assigned' || b.status === 'pending'));
+    setLoading(false)
   };
 
   useEffect(() => {
@@ -187,10 +189,11 @@ const filteredWorkers = workers
           </Space>
         </Form>
         <Table
+          loading={loading}
           columns={bookingColumns}
           dataSource={workerTasks}
           rowKey="_id"
-          pagination={false}
+          pagination={{pageSize:10}}
           className="mt-4"
         />
       </Modal>
@@ -207,9 +210,9 @@ const filteredWorkers = workers
       </div>
 
       {/* Workers Grid */}
-      {bookings ?
+      
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {filteredWorkers.map(worker => (
+      {filteredWorkers  ? filteredWorkers.map(worker => (
         <Card
           key={worker._id}
           className="shadow-md hover:shadow-lg transition-shadow"
@@ -243,10 +246,11 @@ const filteredWorkers = workers
             <Button type="default">View Details</Button>
           </div>
         </Card>
-      ))}
-    </div> :
-    <div>Loading...</div>
+      )): 
+      <div>Loading.....</div>
     }
+    </div>
+    
       
     </div>
   );

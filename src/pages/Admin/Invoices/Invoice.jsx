@@ -18,6 +18,7 @@ const Invoice = () => {
   const [selectedInvoice, setSelectedInvoice] = useState(null);
   const [isInvoiceDetailsOpen, setIsInvoiceDetailsOpen] = useState(false);
   const [invoices, setInvoices] = useState([]);
+  const [loading, setLoading] = useState(true)
   const printRef = useRef();
   const buttonsRef = useRef();
 
@@ -26,6 +27,7 @@ const Invoice = () => {
     const fetchInvoices = async () => {
       const { payload } = await dispatch(TaskNotPending());
       setInvoices(payload?.data?.data || []);
+      setLoading(false);
     };
     fetchInvoices();
   }, [dispatch]);
@@ -187,10 +189,11 @@ const Invoice = () => {
       </div>
 
       <Table
+        loading= {loading}
         columns={columns}
         dataSource={filteredInvoices}
         rowKey="_id"
-        pagination={false}
+        pagination={{pageSize:10}}
         bordered
         className="rounded-md"
       />

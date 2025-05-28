@@ -31,14 +31,15 @@ const TasksList = () => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [isTaskDetailsOpen, setIsTaskDetailsOpen] = useState(false);
   const [isCompleteTaskOpen, setIsCompleteTaskOpen] = useState(false);
+  const [loading, setLoading] = useState(true)
   const [form] = Form.useForm();
   const [tasks, settask] = useState([])
 
 
   const fetchTaskList = async(statusFilter)=>{
-  console.log('statusFilter: ', statusFilter);
       let {payload} = await dispatch(TaskList(statusFilter))
-      settask( payload?.data?.data)
+      settask( payload?.data?.data);
+      setLoading(false)
   }
 
   useEffect(()=>{
@@ -212,10 +213,11 @@ const TasksList = () => {
 
       <div className="overflow-x-auto">
         <Table
+          loading={loading}
           columns={columns}
           dataSource={filteredTasks}
           rowKey="id"
-          pagination={false}
+          pagination={{pageSize:10}}
           bordered
           className="rounded-md min-w-[720px]"
         />

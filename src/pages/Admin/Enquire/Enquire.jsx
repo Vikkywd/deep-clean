@@ -102,22 +102,6 @@ function Enquire() {
       ),
       width: 120,
     },
-    // {
-    //   title: 'Owner Number',
-    //   dataIndex: ['ownerObj', 'phone'],
-    //   render: (data) => data || 'Not Specified',
-    // },
-    // {
-    //   title: 'Experience',
-    //   dataIndex: 'experiance',
-    //   sorter: (a, b) =>
-    //     parseInt(a.experiance) - parseInt(b.experiance),
-    // },
-    // {
-    //   title: 'Customers Served',
-    //   dataIndex: 'customers_served',
-    //   sorter: (a, b) => parseInt(a.customers_served) - parseInt(b.customers_served),
-    // },
   ];
 
   const getEnquireList = async()=>{

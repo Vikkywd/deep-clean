@@ -15,6 +15,7 @@ const BookingsPage = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
   const [isNewBookingOpen, setIsNewBookingOpen] = useState(false);
   const [bookings, setBookingData] =  useState([]);
   const [bookingStatus, setBookingStatus] = useState('')
@@ -32,6 +33,7 @@ const BookingsPage = () => {
     const fetchBookings = async () => {
       const allData = await allBooking(bookingStatus); 
       setBookingData(allData || []); 
+      setLoading(false)
     }
     fetchBookings()
   },[bookingStatus])
@@ -174,12 +176,13 @@ const BookingsPage = () => {
 
       <div className="overflow-x-auto">
         <Table
+          loading={loading}
           columns={columns}
           dataSource={filteredBookings}
           rowKey="id"
-          pagination={false}
           bordered
           className="rounded-md min-w-[700px]"
+          pagination={{ pageSize: 10 }}
         />
       </div>
     </div>
